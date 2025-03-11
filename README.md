@@ -74,7 +74,7 @@ Serão analisados os seguintes pontos:
 ## Observações
 1. O candidato deverá abrir uma branch própria para realização do projeto e **não deve mergear na main em hipótese alguma**!
 2. Crie uma branch seguindo o modelo (`project/nome-candidato-nome-do-crud`)
-3. Essa branch do candidato (Ex: (`project/arthur-barros-crud-supermercado`)) servirá como a branch main do projeto do candidato, todas as alterações devem ser feitas por outros commits e PRs a fim de conseguirmos visualizar como é feito a atualização e familiaridade do candidato em conseguir trabalhar seguindo um Git Flow 
+3. Essa branch do candidato (Ex: `project/arthur-barros-crud-supermercado`) servirá como a branch main do projeto do candidato, todas as alterações devem ser feitas por outros commits e PRs a fim de conseguirmos visualizar como é feito a atualização e familiaridade do candidato em conseguir trabalhar seguindo um Git Flow 
 4. Commit suas alterações seguindo o padrão
 5. Abra um Pull Request e pode fazer o merge sem depender do avaliador, o histórico será analisado futuramente quando concluir a prova
 
