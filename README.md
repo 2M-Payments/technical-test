@@ -53,13 +53,6 @@ frontend/
 │-- package.json
 ```
 
-## Configuração do Ambiente
-
-### Requisitos
-- Node.js instalado
-- MySQL instalado
-- Gerenciador de pacotes (npm ou yarn)
-
 ## Padrões de Commit
 Este projeto segue o padrão **Conventional Commits**. Exemplos:
 ```
