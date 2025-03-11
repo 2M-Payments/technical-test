@@ -10,6 +10,8 @@ Este repositório serve para fins do teste técnico CRUD full stack utilizando *
 - Injeção de dependência
 - Arquitetura modular
 - Testes unitários
+- Validação a entrada dos dados, **preferência ZOD**
+- Utilizar framework para autenticação da sessão com **tempo limite de 30 minutos**
 
 ### Front-end
 - React com TypeScript
@@ -59,7 +61,7 @@ Este projeto segue o padrão **Conventional Commits**. Exemplos:
 feat: adiciona endpoint de criação de usuário
 fix: corrige bug na autenticação
 refactor: melhora a estrutura dos repositórios
-text: adiciona teste da service de exclusao de um item por id
+test: adiciona teste da service de exclusao de um item por id
 ```
 
 ## Avaliação
@@ -70,13 +72,23 @@ Serão analisados os seguintes pontos:
 - **Estrutura dos commits e mensagens**
 - **Uso adequado de injeção de dependência**
 - **Testes unitários**
+- **Avaliação de prioridade na entrega do CRUD**
+
+## Funcionalidade necessárias do CRUD
+1. Criar um item por vez
+2. Criar vários itens em lote
+3. Listagem de todos os itens do CRUD utilizando paginação
+4. Listagem de um único item buscado por ID
+5. Alteração dos dados de um item específico
+6. Deletar um item por vez
+7. Deletar vários itens por vez
+8. Deletar todos os itens de uma vez
 
 ## Observações
-1. O candidato deverá abrir uma branch própria para realização do projeto e **não deve mergear na main em hipótese alguma**!
-2. Crie uma branch seguindo o modelo (`project/nome-candidato-nome-do-crud`)
-3. Essa branch do candidato (Ex: `project/arthur-barros-crud-supermercado`) servirá como a branch main do projeto do candidato, todas as alterações devem ser feitas por outros commits e PRs a fim de conseguirmos visualizar como é feito a atualização e familiaridade do candidato em conseguir trabalhar seguindo um Git Flow 
-4. Commit suas alterações seguindo o padrão
-5. Abra um Pull Request e pode fazer o merge sem depender do avaliador, o histórico será analisado futuramente quando concluir a prova
-
+1. O candidato deverá criar um fork do repositório. Ao concluir a avaliação, abrir um pull request.
+2. Crie uma branch seguindo o modelo (`project/nome-candidato-nome-do-crud`).
+3. Todas as alterações devem ser feitas por outros commits e PRs a fim de conseguirmos visualizar como é feito a atualização e familiaridade do candidato em conseguir trabalhar seguindo um Git Flow.
+4. Commit suas alterações seguindo o padrão.
+5. Prazo será combinado com o avaliador a depender do nível experiência do candidato.
 ---
 
