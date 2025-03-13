@@ -1,0 +1,31 @@
+# Ignorar dependências do Node.js
+backend/node_modules/
+
+# Ignorar configurações do TypeScript e compilação
+backend/dist/
+backend/tsconfig.tsbuildinfo
+
+# Ignorar arquivos de configuração do ambiente
+backend/.env
+
+# Ignorar logs e debug
+backend/npm-debug.log*
+backend/yarn-debug.log*
+backend/yarn-error.log*
+backend/pnpm-debug.log*
+backend/logs/
+backend/debug.log
+backend/out.log
+backend/error.log
+
+# Ignorar cache do editor de código
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Ignorar dependências do front-end (Já me adiantando)
+frontend/node_modules/
+frontend/dist/
+frontend/build/
+frontend/.env
