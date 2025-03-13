@@ -1,19 +1,14 @@
 import { Request, Response } from "express";
+import { injectable, inject } from "tsyringe";
 import { MusicoService } from "../services/MusicoService";
-import { Musico } from "../entities/Musico";
-import { container } from "../config/container";
 
+@injectable()
 export class MusicoController {
-    private service: MusicoService;
-
-    constructor() {
-        this.service = container.resolve(MusicoService);
-    }
+    constructor(@inject("MusicoService") private service: MusicoService) { }
 
     public async criar(req: Request, res: Response): Promise<void> {
         try {
-            const musico = req.body as Musico;
-            const novoMusico = await this.service.criarMusico(musico);
+            const novoMusico = await this.service.criarMusico(req.body);
             res.status(201).json(novoMusico);
         } catch (error) {
             res.status(400).json({ error: (error as Error).message });
