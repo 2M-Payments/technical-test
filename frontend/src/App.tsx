@@ -1,7 +1,6 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { MusicoList } from "./pages/MusicoList";
-import { MusicoForm } from "./pages/MusicoForm";
+import MusicoList from "./pages/MusicoList";
+import MusicoForm from "./pages/MusicoForm";
 
 function App() {
   return (

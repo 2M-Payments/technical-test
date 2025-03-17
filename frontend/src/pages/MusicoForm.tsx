@@ -38,3 +38,4 @@ export const MusicoForm = () => {
     </form>
   );
 };
+export default MusicoForm;
