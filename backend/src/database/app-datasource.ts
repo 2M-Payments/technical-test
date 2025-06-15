@@ -17,4 +17,5 @@ const AppDataSource = new DataSource({
     entities: [Product],
 } as DataSourceOptions); 
 
+
 export default AppDataSource;
