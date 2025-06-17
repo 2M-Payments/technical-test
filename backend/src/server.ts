@@ -10,12 +10,19 @@ import { validateProductUpdate } from './middlewares/errorHandler';
 import { UserController } from './controllers/UserController';
 import { UserService } from './services/UserService';
 import { UserRepository } from './repositories/UserRepository';
+import cors from 'cors';
 
 
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cors({
+  origin: '*', 
+  methods: ['GET', 'POST', 'PATCH', 'DELETE'], 
+  allowedHeaders: ['Content-Type', 'Authorization'] 
+}));
 
 AppDataSource.initialize() 
     .then(() => {
