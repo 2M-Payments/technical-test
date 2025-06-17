@@ -47,13 +47,14 @@ export class ProductController {
     }
 
     async updateProduct(req: Request, res: Response): Promise<void> {
+
         const { id } = req.params;
         const data = req.body;
         try {
             const updatedProduct = await this.productService.updateProduct(Number(id), data);
             if (!updatedProduct) {
                 res.status(404).json({ message: 'Produto não encontrado' });
-
+                return;
             }
             res.status(200).json(updatedProduct);
 

@@ -1,7 +1,7 @@
 import { UserRepository } from "../repositories/UserRepository";
 import { User } from "../entities/user";
 import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken"; 
+import jwt from "jsonwebtoken";
 
 export class UserService {
   private userRepository: UserRepository;
@@ -10,21 +10,26 @@ export class UserService {
     this.userRepository = userRepository;
   }
 
-  async createUser(data: { email: string; userName: string; password: string }): Promise<Omit<User, "password">> {
+  async createUser(data: { email: string; userName: string; password: string }): Promise<{ user: Omit<User, "password">; token: string }> {
     const existingUser = await this.userRepository.getUserByEmail(data.email);
     if (existingUser) {
       throw new Error("Já existe um usuário com esse e-mail.");
     }
 
-    const hashedPassword = await bcrypt.hash(data.password, 10);
+    const hashedPassword = await bcrypt.hash(data.password, parseInt(process.env.SALT!, 10));
 
-    const user = await this.userRepository.createUser({
+    const user = await this.userRepository.createUser({ // aqui eu encripto a senha
       ...data,
       password: hashedPassword,
     });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: "24h" });
+
 
     const { password, ...userWithoutPassword } = user;
-    return userWithoutPassword;
+    return {
+      user: userWithoutPassword,
+      token,
+    };
   }
 
   async authUser(data: { email: string; password: string }): Promise<{ user: Omit<User, "password">; token: string }> {
@@ -38,7 +43,7 @@ export class UserService {
       throw new Error("Usuário inexistente ou senha incorreta.");
     }
 
-    const token = jwt.sign({ sub: user.id }, process.env.JWT_SECRET!, { expiresIn: "1h" });
+    const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET!, { expiresIn: "24h" });
 
     const { password, ...userWithoutPassword } = user;
     return {

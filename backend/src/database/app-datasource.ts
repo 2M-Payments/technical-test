@@ -1,4 +1,5 @@
 import { Product } from "../entities/product";
+import { User } from "../entities/user";
 import "reflect-metadata"
 import { DataSource } from "typeorm";
 import { DataSourceOptions } from "typeorm/data-source/DataSourceOptions";
@@ -14,7 +15,7 @@ const AppDataSource = new DataSource({
     database: process.env.DB_NAME,
     synchronize: true,
     logging: false,
-    entities: [Product],
+    entities: [Product, User],
 } as DataSourceOptions); 
 
 

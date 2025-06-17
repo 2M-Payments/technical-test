@@ -5,7 +5,7 @@ import express from 'express'
 import { ProductController } from './controllers/ProductController';
 import { ProductService } from './services/ProductService';
 import { ProductRepository } from './repositories/ProductRepository';
-import { authMiddleware, validateProductCreate } from './middlewares/errorHandler';
+import { authMiddleware, validateProductCreate, validateUserAuth, validateUserCreate } from './middlewares/errorHandler';
 import { validateProductUpdate } from './middlewares/errorHandler';
 import { UserController } from './controllers/UserController';
 import { UserService } from './services/UserService';
@@ -14,6 +14,8 @@ import { UserRepository } from './repositories/UserRepository';
 
 
 const app = express();
+
+app.use(express.json());
 
 AppDataSource.initialize() 
     .then(() => {
@@ -31,15 +33,15 @@ const userController = new UserController(userService);
 
 const PORT = process.env.PORT || 3000;
 
-app.post('/products', validateProductCreate,(req, res) => productController.createProduct(req, res)); 
-app.get('/products', (req, res) => productController.getAllProducts(req, res)); 
-app.get('/products/:id', (req, res) => productController.getProductById(req, res)); 
-app.put('/products/:id', validateProductUpdate, (req, res) => productController.updateProduct(req, res)); 
-app.delete('/products/:id', (req, res) => productController.deleteProduct(req, res)); 
+app.post('/products',authMiddleware, validateProductCreate,(req, res) => productController.createProduct(req, res)); 
+app.get('/products',authMiddleware, (req, res) => productController.getAllProducts(req, res)); 
+app.get('/products/:id',authMiddleware, (req, res) => productController.getProductById(req, res)); 
+app.patch('/products/:id',authMiddleware, validateProductUpdate, (req, res) => productController.updateProduct(req, res)); 
+app.delete('/products/:id',authMiddleware, (req, res) => productController.deleteProduct(req, res)); 
 
 
-app.post('/user', (req, res) => userController.createUser(req, res));
-app.post('/userAuth',authMiddleware, (req, res) => userController.login(req, res));
+app.post('/user',validateUserCreate, (req, res) => userController.createUser(req, res));
+app.post('/userAuth',validateUserAuth, (req, res) => userController.login(req, res));
 app.get('/profile', authMiddleware,(req, res) => userController.profile(req, res));
 
 

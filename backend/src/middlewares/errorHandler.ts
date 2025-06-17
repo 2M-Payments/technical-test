@@ -1,20 +1,41 @@
 import { Request, Response, NextFunction } from 'express';
 import { z } from 'zod';
 import jwt, { JwtPayload } from "jsonwebtoken";
-import "../types/express/index";
+import { productCreateSchema, productUpdateSchema, authUserSchema, createUserSchema } from '../middlewares/Schema';
 
 
-const productCreateSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório'),
-  quantity: z.number().int().min(0, 'Quantidade não pode ser negativa'),
-  price: z.number().min(0.01, 'Preço deve ser maior que 0'),
-});
+export const validateUserAuth = (req: Request, res: Response, next: NextFunction) => {
+  try {
+    authUserSchema.parse(req.body);
+    next();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({
+        message: 'Erro de validação',
+        errors: error.errors,
+      });
+    } else {
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  }
+}
 
-const productUpdateSchema = z.object({
-  name: z.string().min(1, 'Nome é obrigatório').optional(),
-  quantity: z.number().int().min(0, 'Quantidade não pode ser negativa').optional(),
-  price: z.number().min(0.01, 'Preço deve ser maior que 0').optional(),
-});
+export const validateUserCreate = (req: Request, res: Response, next: NextFunction) => {
+   console.log(req.body);
+  try {
+    createUserSchema.parse(req.body);
+    next();
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      res.status(400).json({
+        message: 'Erro de validação',
+        errors: error.errors,
+      });
+    } else {
+      res.status(500).json({ message: 'Erro interno do servidor' });
+    }
+  }
+}
 
 export const validateProductCreate = (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -22,12 +43,12 @@ export const validateProductCreate = (req: Request, res: Response, next: NextFun
     next();
   } catch (error) {
     if (error instanceof z.ZodError) {
-       res.status(400).json({
+      res.status(400).json({
         message: 'Erro de validação',
         errors: error.errors,
       });
     }
-     res.status(500).json({ message: 'Erro interno do servidor' });
+    res.status(500).json({ message: 'Erro interno do servidor' });
   }
 };
 
@@ -37,12 +58,12 @@ export const validateProductUpdate = (req: Request, res: Response, next: NextFun
     next();
   } catch (error) {
     if (error instanceof z.ZodError) {
-       res.status(400).json({
+      res.status(400).json({
         message: 'Erro de validação',
         errors: error.errors,
       });
     }
-     res.status(500).json({ message: 'Erro interno do servidor' });
+    res.status(500).json({ message: 'Erro interno do servidor' });
   }
 };
 
@@ -50,7 +71,7 @@ export const validateProductUpdate = (req: Request, res: Response, next: NextFun
 export function authMiddleware(req: Request, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
-  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+  if (!authHeader || !authHeader?.startsWith("Bearer ")) {
     res.status(401).json({ error: "Token não fornecido" });
     return
   }
@@ -59,9 +80,11 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction) 
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as JwtPayload;
-    req.user = decoded; 
+    req.user = decoded;
     next();
   } catch (err) {
-     res.status(401).json({ error: "Token inválido" });
+    res.status(401).json({ error: "Token inválido" });
   }
 }
+
+
