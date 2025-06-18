@@ -16,15 +16,26 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState(getStoredUser());
 
-  const login = async (email: string, password: string) => {
+ const login = async (email: string, password: string) => {
+  try {
     const userData = await apiLogin(email, password);
     storeUser(userData);
     setUser(userData);
-  };
-
+  } catch (error) {
+    throw error; 
+  }
+};
   const register =  async (email: string, password: string, userName: string) => {
      
-    await registerUser(email, password, userName);
+    const register = await registerUser(email, password, userName);
+    if (register) {
+      const userData = await apiLogin(email, password);
+      storeUser(userData);
+      setUser(userData);
+      login(email, password);
+    } else {
+      throw new Error('Registration failed');
+    }
    
   };
 
