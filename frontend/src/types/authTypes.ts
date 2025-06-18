@@ -1,9 +1,9 @@
-// src/types/authTypes.ts
+
 export interface User {
   id: string;
   email: string;
   name?: string;
-  // Adicione outros campos conforme necessário
+  
 }
 
 export interface AuthState {
