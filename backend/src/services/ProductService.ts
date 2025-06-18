@@ -1,5 +1,6 @@
 import { ProductRepository } from '../repositories/ProductRepository';
 import { Product } from '../entities/product';
+import { Pagination } from 'src/types/common/pagination';
 
 export class ProductService {
   private productRepository: ProductRepository;
@@ -27,8 +28,9 @@ export class ProductService {
   }
 
   
-  async getAllProducts(): Promise<Product[]> {
-    return this.productRepository.getAllProducts();
+  async getAllProducts({page, limit}: Pagination): Promise<Product[]> {
+    
+    return this.productRepository.getAllProducts({page, limit});
   }
 
  

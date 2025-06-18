@@ -32,7 +32,7 @@ h1 {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Inputs */
+
 input {
     width: 100%; 
     height: 50px;
@@ -47,7 +47,7 @@ input {
     background-color: #ffffff;
     color: #333;
     
-    /* Transições suaves */
+    
     transition: all 0.3s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
@@ -115,7 +115,7 @@ button:active {
     }
     
     .form-container {
-        max-width: 90%; /* Reduz largura em mobile */
+        max-width: 90%; 
     }
     
     h1 {

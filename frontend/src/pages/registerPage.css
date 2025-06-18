@@ -2,7 +2,7 @@
     box-sizing: border-box;
 }
 
-/* Container principal do registro */
+
 .register-container {
     display: flex;
     justify-content: center;
@@ -13,7 +13,7 @@
     padding: 20px;
 }
 
-/* Container do formulário */
+
 .register-form-container {
     width: 100%;
     max-width: 500px;
@@ -22,9 +22,9 @@
     align-items: center;
 }
 
-/* Título da página de registro */
+
 .register-container h1 {
-    background: linear-gradient(135deg, #0c0a07, #e970d7);
+    background: linear-gradient(135deg, #f0eeec, #dfc7db);
     padding: 20px;
     color: white;
     font-size: 32px;
@@ -39,7 +39,7 @@
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
-/* Inputs do registro */
+
 .register-container input {
     width: 100%; 
     height: 50px;
@@ -57,7 +57,7 @@
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* Estados interativos dos inputs */
+
 .register-container input:focus {
     outline: none;
     border-color: #e970d7;
@@ -69,7 +69,7 @@
     border-color: #9ca3af;
 }
 
-/* Placeholder customizado */
+
 .register-container input::placeholder {
     color: #9ca3af;
     font-weight: 400;
@@ -84,7 +84,7 @@
     transform: translateX(5px);
 }
 
-/* Container para inputs lado a lado */
+
 .input-row {
     display: flex;
     gap: 15px;
@@ -97,7 +97,7 @@
     flex: 1;
 }
 
-/* Botão de registro */
+
 .register-container button {
     width: 100%;
     height: 50px; 
@@ -126,7 +126,7 @@
     transform: translateY(0);
 }
 
-/* Link para login */
+
 .login-link {
     margin-top: 25px;
     text-align: center;
@@ -143,11 +143,11 @@
 }
 
 .login-link a:hover {
-    color: #d946ef;
+    color: #d14ce6;
     text-decoration: underline;
 }
 
-/* Checkbox de termos */
+
 .terms-container {
     display: flex;
     align-items: center;
@@ -174,7 +174,7 @@
     text-decoration: underline;
 }
 
-/* Responsividade */
+
 @media (max-width: 768px) {
     .register-container {
         padding: 15px;

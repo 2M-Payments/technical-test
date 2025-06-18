@@ -2,7 +2,7 @@ import Input from '../components/input';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import './loginPage.css'; // Assuming you have a CSS file for styling
+import './loginPage.css'; 
 
 export const LoginPage = () => {
   const [email, setEmail] = useState('');

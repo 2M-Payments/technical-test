@@ -27,7 +27,7 @@ export const RegisterPage = () => {
     e.preventDefault();
     setError('');
     
-    // Validações
+    
     if (password !== confirmPassword) {
       setError('As senhas não coincidem');
       return;
