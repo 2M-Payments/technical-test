@@ -1,17 +1,11 @@
+import 'reflect-metadata';
+import './container';
+
 import express from 'express';
-import cors from 'cors';
-declare global {
-  namespace Express {
-    export interface Request {
-      user: {
-        id: string;
-      };
-    }
-  }
-}
+import authRoutes from './routes/auth.routes';
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use('/auth', authRoutes);
 
 export default app;
