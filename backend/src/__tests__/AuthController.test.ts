@@ -1,7 +1,8 @@
-import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
 import { AuthController } from '../controllers/AuthController';
+import { AuthService } from '../services/AuthService';
+import { ZodError } from 'zod';
 
 const mockAuthService = {
   register: jest.fn(),
@@ -20,21 +21,18 @@ describe('AuthController', () => {
 
   beforeEach(() => {
     jest.clearAllMocks();
-    
-   
     jest.spyOn(container, 'resolve').mockReturnValue(mockAuthService as any);
-
-    controller = new AuthController(); 
+    controller = new AuthController();
   });
 
   describe('register', () => {
-    it('deve chamar o service e retornar 201 com os dados do usuário em caso de sucesso', async () => {
+    it('deve registrar um usuário com sucesso', async () => {
       const mockReq = {
-        body: { name: 'New User', email: 'new@example.com', password: 'password123' },
+        body: { name: 'User', email: 'a@a.com', password: '123456' },
       } as Request;
       const mockRes = makeMockRes();
-      const expectedUser = { id: 'uuid', name: 'New User', email: 'new@example.com' };
-      
+      const expectedUser = { id: '1', name: 'User', email: 'a@a.com' };
+
       mockAuthService.register.mockResolvedValue(expectedUser);
 
       await controller.register(mockReq, mockRes);
@@ -44,60 +42,63 @@ describe('AuthController', () => {
       expect(mockRes.json).toHaveBeenCalledWith(expectedUser);
     });
 
-    it('deve retornar 400 se o Zod Schema falhar a validação', async () => {
-        const mockReq = { body: { email: 'invalid-email' } } as Request;
-        const mockRes = makeMockRes();
-        
-        await controller.register(mockReq, mockRes);
-  
-        expect(mockAuthService.register).not.toHaveBeenCalled();
-        expect(mockRes.status).toHaveBeenCalledWith(400);
-        expect(mockRes.json).toHaveBeenCalled();
+    it('deve lançar um ZodError se a validação do schema falhar', async () => {
+      const mockReq = { body: { email: 'email-invalido' } } as Request;
+      const mockRes = makeMockRes();
+
+      await expect(controller.register(mockReq, mockRes)).rejects.toThrow(ZodError);
+      expect(mockAuthService.register).not.toHaveBeenCalled();
     });
 
-    it('deve retornar 400 se o serviço lançar um erro', async () => {
+    it('deve propagar erro se o service lançar exceção', async () => {
       const mockReq = {
-        body: { name: 'Test', email: 'test@example.com', password: 'password123' },
+        body: { name: 'Test', email: 'test@example.com', password: '123456' },
       } as Request;
       const mockRes = makeMockRes();
       const serviceError = new Error('Email já cadastrado');
 
       mockAuthService.register.mockRejectedValue(serviceError);
 
-      await controller.register(mockReq, mockRes);
-
-      expect(mockRes.status).toHaveBeenCalledWith(400);
-      expect(mockRes.json).toHaveBeenCalledWith({ message: serviceError.message });
+      await expect(controller.register(mockReq, mockRes)).rejects.toThrow('Email já cadastrado');
+      expect(mockAuthService.register).toHaveBeenCalledWith(mockReq.body);
     });
   });
 
   describe('login', () => {
-    it('deve chamar o service e retornar 200 com o token em caso de sucesso', async () => {
-      const mockReq = { body: { email: 'user@example.com', password: 'password123' } } as Request;
+    it('deve fazer login com sucesso e retornar token', async () => {
+      const mockReq = {
+        body: { email: 'user@example.com', password: 'password123' },
+      } as Request;
       const mockRes = makeMockRes();
-      const expectedResult = { token: 'fake-jwt-token' };
+      const expected = { token: 'fake-token' };
 
-      mockAuthService.login.mockResolvedValue(expectedResult);
+      mockAuthService.login.mockResolvedValue(expected);
 
       await controller.login(mockReq, mockRes);
 
       expect(mockAuthService.login).toHaveBeenCalledWith(mockReq.body);
-     
-      expect(mockRes.json).toHaveBeenCalledWith(expectedResult);
+      expect(mockRes.json).toHaveBeenCalledWith(expected);
     });
 
-    it('deve retornar 401 se o serviço lançar um erro', async () => {
-        const mockReq = { body: { email: 'user@example.com', password: 'wrongpassword' } } as Request;
-        const mockRes = makeMockRes();
-        const serviceError = new Error('Credenciais inválidas');
+    it('deve lançar um ZodError se o login tiver dados inválidos', async () => {
+      const mockReq = { body: { email: 'email-invalido' } } as Request;
+      const mockRes = makeMockRes();
 
-        mockAuthService.login.mockRejectedValue(serviceError);
+      await expect(controller.login(mockReq, mockRes)).rejects.toThrow(ZodError);
+      expect(mockAuthService.login).not.toHaveBeenCalled();
+    });
 
-        await controller.login(mockReq, mockRes);
+    it('deve propagar erro se o login falhar', async () => {
+      const mockReq = {
+        body: { email: 'user@example.com', password: 'wrongpassword' },
+      } as Request;
+      const mockRes = makeMockRes();
+      const error = new Error('Credenciais inválidas');
 
-        expect(mockAuthService.login).toHaveBeenCalledWith(mockReq.body);
-        expect(mockRes.status).toHaveBeenCalledWith(401);
-        expect(mockRes.json).toHaveBeenCalledWith({ message: serviceError.message });
+      mockAuthService.login.mockRejectedValue(error);
+
+      await expect(controller.login(mockReq, mockRes)).rejects.toThrow('Credenciais inválidas');
+      expect(mockAuthService.login).toHaveBeenCalledWith(mockReq.body);
     });
   });
 });
