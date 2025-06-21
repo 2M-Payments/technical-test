@@ -1,12 +1,25 @@
+// src/App.tsx
 
-import './App.css'
+import { Routes, Route, Navigate } from 'react-router-dom';
+
+import LoginPage from './pages/Login';
+import RegisterPage from './pages/Register';
+import DashboardPage from './pages/Dashboard';
+import NotFoundPage from './pages/NotFoundPage'; 
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline text-blue-600">
-      Olá, mundo! A configuração com Tailwind funcionou!
-    </h1>
-  )
+    <Routes>
+      <Route path="/" element={<Navigate to="/login" />} />
+      
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/cadastro" element={<RegisterPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
+
+    
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
+  );
 }
 
-export default App
+export default App;
