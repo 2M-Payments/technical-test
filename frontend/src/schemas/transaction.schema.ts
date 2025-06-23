@@ -11,11 +11,3 @@ export const transactionSchema = z.object({
 export const batchTransactionSchema = z.object({
   transactions: z.array(transactionSchema).min(1, "Adicione pelo menos uma transação."),
 });
-
-export const transactionFormSchema = z.object({
-  title: z.string().min(1, "Título é obrigatório"),
-  amount: z.string().refine(val => !isNaN(Number(val)) && Number(val) > 0, {
-    message: "Valor deve ser um número positivo",
-  }),
-  type: z.enum(['ganho', 'despesa']),
-});
