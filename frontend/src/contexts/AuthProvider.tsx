@@ -1,6 +1,7 @@
 import { useState, type ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext, type AuthContextData } from './AuthContext';
+import { AuthContext } from './AuthContext';
+import { type AuthContextData} from '../types/auth.types'
 import * as authService from '../services/authService';
 import api from '../services/api'
 import type { LoginData, RegisterData } from '../types/auth.types';
