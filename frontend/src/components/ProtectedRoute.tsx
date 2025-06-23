@@ -6,7 +6,7 @@ interface ProtectedRouteProps {
   children: React.ReactElement;
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
+const ProtectedRoute  = ({ children }:ProtectedRouteProps) => {
   const { isAuthenticated } = useAuth();
 
   if (!isAuthenticated) {

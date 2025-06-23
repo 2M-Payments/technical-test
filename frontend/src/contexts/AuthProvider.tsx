@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode, useEffect } from 'react';
+import { useState, type ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext, type AuthContextData } from './AuthContext';
 import * as authService from '../services/authService';
@@ -9,7 +9,7 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
-const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+const AuthProvider = ({ children }:AuthProviderProps) => {
   const [token, setToken] = useState<string | null>(null);
   const navigate = useNavigate();
 

@@ -1,6 +1,5 @@
 import { Formik, Form } from 'formik';
 import { InputField } from './InputField';
-
 interface FieldConfig {
   name: string;
   label: string;
@@ -15,13 +14,13 @@ interface AuthFormProps {
   submitText: string;
 }
 
-export const AuthForm: React.FC<AuthFormProps> = ({
+export const AuthForm = ({
   initialValues,
   onSubmit,
   validationSchema,
   fields,
   submitText,
-}) => (
+}:AuthFormProps) => (
   <Formik
     initialValues={initialValues}
     validationSchema={validationSchema}

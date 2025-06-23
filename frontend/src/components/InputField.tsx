@@ -6,7 +6,7 @@ interface Props {
   type?: string;
 }
 
-export const InputField: React.FC<Props> = ({ name, label, type = 'text' }) => (
+export const InputField = ({ name, label, type = 'text' }:Props) => (
   <div className="mb-4">
     <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">
       {label}
