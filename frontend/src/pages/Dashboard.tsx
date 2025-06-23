@@ -1,24 +1,30 @@
-import { useEffect, useState,type FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import { useTransaction } from '../hooks/useTransaction';
 import { type Transaction } from '../types/transaction.types';
 
 import TransactionForm from '../components/TransactionForm';
 import EditTransactionModal from '../components/EditTransactionModal';
 import BatchTransactionForm from '../components/BatchTransactionForm';
-
-import { FiPlus, FiTrash2, FiSearch, FiUpload } from 'react-icons/fi';
 import Summary from '../components/Summary';
+import TransactionList from '../components/TransactionList';
+
+import { FiPlus, FiTrash2, FiSearch, FiUpload,FiLogOut } from 'react-icons/fi';
+import { useAuth } from '../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
 
 const DashboardPage: FC = () => {
-  const { 
-    transactions, 
+  const {
+    transactions,
     loading,
-    fetchData, 
-    removeTransaction, 
+    fetchData,
+    removeTransaction,
     deleteBatchTransactions,
     deleteAllTransactions
   } = useTransaction();
 
+  const { signOut } = useAuth();
+  const navigate = useNavigate();
+  
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [editingTransaction, setEditingTransaction] = useState<Transaction | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -55,7 +61,7 @@ const DashboardPage: FC = () => {
   return (
     <>
       {editingTransaction && (
-        <EditTransactionModal 
+        <EditTransactionModal
           transaction={editingTransaction}
           onClose={() => setEditingTransaction(null)}
         />
@@ -64,8 +70,7 @@ const DashboardPage: FC = () => {
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white rounded-xl p-6 shadow-lg">
-            <TransactionForm />
-            <button className="mt-4 text-red-500" onClick={() => setShowForm(false)}>Fechar</button>
+            <TransactionForm onClose={() => setShowForm(false)} />
           </div>
         </div>
       )}
@@ -73,26 +78,34 @@ const DashboardPage: FC = () => {
       {showBatchForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
           <div className="bg-white rounded-xl p-6 shadow-lg">
-            <BatchTransactionForm />
-            <button className="mt-4 text-red-500" onClick={() => setShowBatchForm(false)}>Fechar</button>
+            <BatchTransactionForm onClose={() => setShowBatchForm(false)} />
           </div>
         </div>
       )}
 
-        <header className="bg-[#00A7E7] text-white py-6 p-4 max-w-5xl mx-auto rounded-b-2xl shadow" >
-          <div className="max-w-5xl mx-auto text-center text-3xl font-semibold">
-            Controle Financeiro
-          </div>
-        </header>
+      <header className="bg-[#00A7E7] text-white py-6 p-4 max-w-5xl mx-auto rounded-b-2xl shadow flex justify-between items-center">
+        <h1 className="text-3xl font-semibold text-center w-full">Controle Financeiro</h1>
+        <button
+            onClick={() => {
+              signOut();
+              navigate('/login');
+            }}
+            className="absolute right-6 top-6 flex items-center gap-2 cursor-pointer text-[#00A7E7] hover:text-red-200"
+            title="Sair"
+          >
+          <FiLogOut className="text-xl" />
+          <span className="hidden md:inline">Logout</span>
+        </button>
+      </header>
 
       <main className="p-4 max-w-5xl mx-auto">
         <Summary />
         <div className="bg-white rounded-xl shadow p-4 flex flex-col md:flex-row gap-4 items-center justify-between">
           <div className="flex items-center flex-grow min-w-0 border rounded px-3 py-2">
             <FiSearch className="text-gray-500" />
-            <input 
-              type="text" 
-              placeholder="Buscar transação..." 
+            <input
+              type="text"
+              placeholder="Buscar transação..."
               className="outline-none w-full ml-2"
               value={searchTerm}
               onChange={e => setSearchTerm(e.target.value)}
@@ -100,19 +113,19 @@ const DashboardPage: FC = () => {
           </div>
           <div className="flex gap-3">
             <button onClick={() => setShowForm(true)} className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-lg">
-              <FiPlus />
+              <FiPlus className="cursor-pointer" />
             </button>
             <button onClick={() => setShowBatchForm(true)} className="bg-green-500 hover:bg-green-600 text-white p-2 rounded-lg">
-              <FiUpload />
+              <FiUpload className="cursor-pointer" />
             </button>
             {selectedIds.length > 0 && (
               <button onClick={handleDeleteSelected} className="bg-yellow-500 hover:bg-yellow-600 text-black p-2 rounded-lg">
-                <FiTrash2 />
+                <FiTrash2 className="cursor-pointer" />
               </button>
             )}
             {transactions.length > 0 && (
               <button onClick={handleDeleteAll} className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg">
-                <FiTrash2 />
+                <FiTrash2 className="cursor-pointer" />
               </button>
             )}
           </div>
@@ -121,38 +134,14 @@ const DashboardPage: FC = () => {
         <section className="mt-6 space-y-3">
           {loading && transactions.length === 0 ? (
             <p>Carregando...</p>
-          ) : filteredTransactions.length === 0 ? (
-            <p>Nenhuma transação encontrada.</p>
           ) : (
-            filteredTransactions.map(transaction => (
-              <div 
-                key={transaction.id}
-                className="bg-white flex items-center justify-between p-4 rounded-xl shadow"
-              >
-                <div className="flex items-center gap-3">
-                  <input 
-                    type="checkbox"
-                    checked={selectedIds.includes(transaction.id)}
-                    onChange={() => handleSelect(transaction.id)}
-                  />
-                  <div>
-                    <p className="font-medium">{transaction.title}</p>
-                    <span className="text-sm text-gray-500">{new Date(transaction.createdAt).toLocaleDateString()}</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                  <span>
-                    {transaction.type === 'ganho' 
-                      ? <span className="text-green-600">⬆️</span> 
-                      : <span className="text-red-600">⬇️</span>}
-                  </span>
-                  <button onClick={() => removeTransaction(transaction.id)} className="text-red-500 hover:text-red-700">
-                    <FiTrash2 />
-                  </button>
-                </div>
-              </div>
-            ))
+            <TransactionList
+              transactions={filteredTransactions}
+              selectedIds={selectedIds}
+              onSelect={handleSelect}
+              onEdit={setEditingTransaction}
+              onDelete={removeTransaction}
+            />
           )}
         </section>
       </main>
