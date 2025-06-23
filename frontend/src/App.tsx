@@ -13,15 +13,14 @@ function App() {
       
       <Route path="/login" element={<LoginPage />} />
       <Route path="/cadastro" element={<RegisterPage />} />
-      <Route 
-        path="/dashboard" 
-        element={
-          <ProtectedRoute>
-            <DashboardPage />
-          </ProtectedRoute>
-        } 
-      />
-
+        <Route 
+          path="/dashboard" 
+          element={
+            <ProtectedRoute>
+              <DashboardPage />
+            </ProtectedRoute>
+          } 
+          />
     
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
