@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { Repository, In } from 'typeorm';
-import { Transaction, TransactionType } from '../entities/Transaction';
-import { TransactionService } from '../services/TransactionService';
+import { Transaction, TransactionType } from '../../entities/Transaction';
+import { TransactionService } from '../../services/TransactionService';
 
 const mockTransactionRepository = {
   create: jest.fn(),
