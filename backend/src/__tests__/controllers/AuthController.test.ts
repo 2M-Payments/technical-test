@@ -1,7 +1,7 @@
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
-import { AuthController } from '../../controllers/AuthController';
-import { AuthService } from '../../services/AuthService';
+import { AuthController } from '../../controllers/authController';
+import { AuthService } from '../../services/authService';
 import { ZodError } from 'zod';
 
 const mockAuthService = {

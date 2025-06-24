@@ -4,9 +4,9 @@ import './container';
 
 import cors from 'cors';
 import express from 'express';
-import authRoutes from './routes/auth.routes';
-import transactionRoutes from './routes/transaction.routes'
-import { errorHandler } from './middlewares/errorHandler.middleware';
+import authRoutes from './routes/authRoutes';
+import transactionRoutes from './routes/transactionRoutes'
+import { errorHandler } from './middlewares/errorHandlerMiddleware';
 
 const app = express();
 

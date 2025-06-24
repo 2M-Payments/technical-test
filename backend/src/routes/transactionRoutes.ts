@@ -1,6 +1,6 @@
 import { Router } from 'express';
-import { TransactionController } from '../controllers/TransactionController';
-import { authGuard } from '../middlewares/auth.middleware';
+import { TransactionController } from '../controllers/transactionController';
+import { authGuard } from '../middlewares/authMiddleware';
 
 const router = Router();
 const controller = new TransactionController();

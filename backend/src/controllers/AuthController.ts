@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { AuthService } from '../services/AuthService';
-import { registerSchema, loginSchema } from '../schemas/auth.schema';
+import { AuthService } from '../services/authService';
+import { registerSchema, loginSchema } from '../schemas/authSchema';
 
 export class AuthController {
   register = async (req: Request, res: Response) => {

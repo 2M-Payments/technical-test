@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { In, Repository } from 'typeorm';
-import { Transaction, TransactionType } from '../entities/Transaction';
+import { Transaction, TransactionType } from '../entities/transaction';
 
 interface CreateData {
   title: string;

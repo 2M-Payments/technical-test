@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { TransactionService } from '../services/TransactionService';
-import { createTransactionSchema, updateTransactionSchema, createManyTransactionsSchema, deleteManyTransactionsSchema } from '../schemas/transaction.schema';
+import { TransactionService } from '../services/transactionService';
+import { createTransactionSchema, updateTransactionSchema, createManyTransactionsSchema, deleteManyTransactionsSchema } from '../schemas/transactionSchema';
 
 export class TransactionController {
   private getService(): TransactionService {

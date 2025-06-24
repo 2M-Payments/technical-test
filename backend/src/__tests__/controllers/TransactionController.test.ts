@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { Request, Response } from 'express';
-import { TransactionController } from '../../controllers/TransactionController';
-import { TransactionService } from '../../services/TransactionService';
+import { TransactionController } from '../../controllers/transactionController';
+import { TransactionService } from '../../services/transactionService';
 
 const mockTransactionService = {
   create: jest.fn(),

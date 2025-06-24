@@ -1,11 +1,11 @@
 import { z } from 'zod';
-import { TransactionType } from '../entities/Transaction';
+import { TransactionType } from '../entities/transaction';
 
 export const createTransactionSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório'),
   amount: z.number().positive('O valor deve ser positivo'),
   type: z.nativeEnum(TransactionType, {
-    errorMap: () => ({ message: "O tipo deve ser 'income' ou 'expense'" }),
+    errorMap: () => ({ message: "O tipo deve ser 'ganho' ou 'despesa'" }),
   }),
 });
 

@@ -1,8 +1,8 @@
 import "reflect-metadata";
 import { DataSource } from 'typeorm';
-import { User } from './entities/User'
+import { User } from './entities/user'
 import * as dotenv from 'dotenv';
-import { Transaction } from "./entities/Transaction";
+import { Transaction } from "./entities/transaction";
 
 dotenv.config();
 

@@ -1,6 +1,6 @@
 import { inject, injectable } from 'tsyringe';
 import { Repository } from 'typeorm';
-import { User } from '../entities/User';
+import { User } from '../entities/user';
 import { hashPassword, comparePasswords } from '../utils/hash';
 import { signToken } from '../utils/jwt';
 
