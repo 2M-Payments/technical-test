@@ -29,7 +29,8 @@ cd backend
 
 ### 2. Crie o arquivo `.env`
 
-Crie um arquivo `.env` na raiz do backend com o seguinte conteúdo:
+Crie um arquivo `.env` na raiz do backend com as seguintes variáveis:
+Você precisará criar uma banco de dados MySQL com o mesmo nome do valor da variavel DB_DATABASE, DB_PASSWORD é a senha que você usa no seu MySQL, DB_USERNAME é o username do seu MySQL
 
 ```env
 PORT=8000
