@@ -6,7 +6,7 @@ import {
   type TransactionInput, 
   type Summary, 
   type PaginationInfo 
-} from '../types/transaction.types';
+} from '../types/transactionTypes';
 
 
 type PaginatedTransactionsResponse = PaginationInfo & {

@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import TransactionContext from '../../contexts/TransactionContext';
 import { useTransaction } from '../../hooks/useTransaction';
-import { type TransactionContextData } from '../../types/transaction.types';
+import { type TransactionContextData } from '../../types/transactionTypes';
 import { type ReactNode } from 'react';
 
 const createTransactionWrapper = (value: TransactionContextData) => ({ children }: { children: ReactNode }) => (

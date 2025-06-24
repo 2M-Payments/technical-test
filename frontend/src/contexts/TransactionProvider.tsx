@@ -8,7 +8,7 @@ import {
   type Summary, 
   type TransactionProviderProps,
   type PaginationInfo
-} from '../types/transaction.types';
+} from '../types/transactionTypes';
 
 export const TransactionProvider = ({ children }: TransactionProviderProps) => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);

@@ -1,6 +1,6 @@
 import { useEffect, useState, type FC } from 'react';
 import { useTransaction } from '../hooks/useTransaction';
-import { type Transaction } from '../types/transaction.types';
+import { type Transaction } from '../types/transactionTypes';
 
 import TransactionForm from '../components/TransactionForm';
 import EditTransactionModal from '../components/EditTransactionModal';

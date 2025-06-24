@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import TransactionContext from '../contexts/TransactionContext';
-import {type TransactionContextData } from '../types/transaction.types';
+import {type TransactionContextData } from '../types/transactionTypes';
 
 export const useTransaction = (): TransactionContextData => {
   const context = useContext(TransactionContext);

@@ -1,6 +1,6 @@
 import api from '../../services/api';
 import { login, register } from '../../services/authService';
-import {type LoginData,type RegisterData } from '../../types/auth.types';
+import {type LoginData,type RegisterData } from '../../types/authTypes';
 
 jest.mock('../../services/api');
 

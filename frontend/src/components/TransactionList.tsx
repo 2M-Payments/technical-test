@@ -1,4 +1,4 @@
-import { type Transaction } from '../types/transaction.types';
+import { type Transaction } from '../types/transactionTypes';
 import { FiEdit, FiTrash2 } from 'react-icons/fi';
 
 interface TransactionListProps {

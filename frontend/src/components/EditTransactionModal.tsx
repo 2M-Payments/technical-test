@@ -1,8 +1,8 @@
 import { Formik, Form, Field } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { useTransaction } from '../hooks/useTransaction';
-import { transactionSchema } from '../schemas/transaction.schema';
-import { type Transaction } from '../types/transaction.types';
+import { transactionSchema } from '../schemas/transactionSchema';
+import { type Transaction } from '../types/transactionTypes';
 import { InputField } from './InputField';
 
 interface EditModalProps {

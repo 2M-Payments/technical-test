@@ -1,9 +1,9 @@
 import { Formik, Form, Field } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { useTransaction } from '../hooks/useTransaction';
-import { transactionSchema } from '../schemas/transaction.schema';
+import { transactionSchema } from '../schemas/transactionSchema';
 import { InputField } from './InputField';
-import type { TransactionInput } from '../types/transaction.types';
+import type { TransactionInput } from '../types/transactionTypes';
 
 interface TransactionFormProps {
   onClose: () => void;

@@ -9,7 +9,7 @@ import {
   deleteBatchTransactions,
   deleteAllTransactions,
 } from '../../services/transactionService';
-import { type TransactionInput } from '../../types/transaction.types';
+import { type TransactionInput } from '../../types/transactionTypes';
 
 jest.mock('../../services/api');
 

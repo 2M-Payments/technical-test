@@ -1,9 +1,9 @@
 import { container } from 'tsyringe';
-import { userRepository } from '../repositories/UserRepository';
+import { userRepository } from '../repositories/userRepository';
 import { Repository } from 'typeorm';
 import { User } from '../entities/user';
 import { Transaction } from '../entities/transaction';
-import { transactionRepository } from '../repositories/TransactionRepository';
+import { transactionRepository } from '../repositories/transactionRepository';
 
 container.register<Repository<User>>('UserRepository', {
   useValue: userRepository,

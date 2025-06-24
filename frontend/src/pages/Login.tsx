@@ -1,6 +1,6 @@
 import { useAuth } from '../hooks/useAuth';
 import { AuthForm } from '../components/AuthForm';
-import { loginSchema } from '../schemas/auth.schema';
+import { loginSchema } from '../schemas/authSchema';
 import { Link } from 'react-router-dom';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 

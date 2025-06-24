@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { AuthContext} from '../../contexts/AuthContext';
-import { type AuthContextData } from '../../types/auth.types';
+import { type AuthContextData } from '../../types/authTypes';
 import { useAuth } from '../../hooks/useAuth';
 import {type ReactNode } from 'react';
 

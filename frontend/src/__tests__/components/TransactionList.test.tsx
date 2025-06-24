@@ -1,6 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import TransactionList from '../../components/TransactionList';
-import { type Transaction } from '../../types/transaction.types';
+import { type Transaction } from '../../types/transactionTypes';
 
 describe('TransactionList', () => {
   const transactions: Transaction[] = [

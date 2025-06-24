@@ -1,10 +1,10 @@
 import { useState, type ReactNode, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './AuthContext';
-import { type AuthContextData} from '../types/auth.types'
+import { type AuthContextData} from '../types/authTypes'
 import * as authService from '../services/authService';
 import api from '../services/api'
-import type { LoginData, RegisterData } from '../types/auth.types';
+import type { LoginData, RegisterData } from '../types/authTypes';
 
 interface AuthProviderProps {
   children: ReactNode;

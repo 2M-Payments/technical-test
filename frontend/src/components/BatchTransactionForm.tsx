@@ -1,8 +1,8 @@
 import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik';
 import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { useTransaction } from '../hooks/useTransaction';
-import { type TransactionInput } from '../types/transaction.types';
-import { batchTransactionSchema } from '../schemas/transaction.schema';
+import { type TransactionInput } from '../types/transactionTypes';
+import { batchTransactionSchema } from '../schemas/transactionSchema';
 
 import { InputField } from './InputField';
 

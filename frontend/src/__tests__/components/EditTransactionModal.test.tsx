@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import EditTransactionModal from '../../components/EditTransactionModal';
 import { useTransaction } from '../../hooks/useTransaction';
-import { type Transaction } from '../../types/transaction.types';
+import { type Transaction } from '../../types/transactionTypes';
 
 jest.mock('../../hooks/useTransaction');
 
