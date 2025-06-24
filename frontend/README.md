@@ -1,54 +1,111 @@
-# React + TypeScript + Vite
+# 🎨 Frontend – Controle Financeiro
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este é o frontend da aplicação **Controle Financeiro**, desenvolvido com React + TypeScript, que consome uma API REST e permite aos usuários autenticados gerenciar transações financeiras (ganhos e despesas).
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Tecnologias
 
-## Expanding the ESLint configuration
+- [React](https://react.dev/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Vite](https://vitejs.dev/) (build tool)
+- [TailwindCSS](https://tailwindcss.com/) (estilização)
+- [Axios](https://axios-http.com/) (requisições HTTP)
+- [React Router DOM](https://reactrouter.com/en/main) (rotas)
+- [Formik](https://formik.org/) + [Zod](https://zod.dev/) + [Yup](https://github.com/jquense/yup) (validação de formulários)
+- [React Icons](https://react-icons.github.io/react-icons/)
+- [Jest](https://jestjs.io/) + [React Testing Library](https://testing-library.com/) (testes)
+- ESLint
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🗂️ Estrutura do Projeto
+
+```
+src/
+├── __tests__/         # Testes automatizados
+├── components/        # Componentes reutilizáveis
+├── contexts/          # Context API (auth)
+├── hooks/             # Hooks customizados
+├── pages/             # Páginas principais
+├── schemas/           # Schemas de validação (Zod/Yup)
+├── services/          # Configuração do Axios + AuthService
+├── types/             # Tipagens personalizadas
+├── App.tsx            # Rotas principais
+├── main.tsx           # Entry point
+└── index.css          # Estilos base (Tailwind)
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🔐 Autenticação
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+A autenticação é feita via JWT. O token:
+
+- É obtido no login via `/auth/login`
+- É salvo no `localStorage` (`@App:token`)
+- É adicionado ao header `Authorization` globalmente via Axios:
+  ```ts
+  api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  ```
+- A navegação entre rotas usa `useNavigate()` do React Router.
+
+---
+
+## 🌐 Rotas (exemplos)
+
+- `/login` – Página de login
+- `/register` – Página de cadastro
+- `/dashboard` – Página principal com transações
+- (Rotas protegidas usam `isAuthenticated` do contexto)
+
+---
+
+## ⚙️ Como rodar
+
+### 1. Instale as dependências
+
+```bash
+cd frontend
+npm install
 ```
+
+### 2. Rode a aplicação
+
+```bash
+npm run dev
+```
+
+Abra no navegador: [http://localhost:5173](http://localhost:5173)
+
+---
+
+## 🧪 Testes
+
+O projeto usa **Jest** e **React Testing Library**.
+
+Para rodar os testes:
+
+```bash
+npm run test
+```
+
+---
+
+## 📄 Scripts disponíveis
+
+```bash
+npm run dev       # Inicia em modo desenvolvimento
+npm run build     # Compila o projeto para produção
+npm run preview   # Visualiza o build localmente
+npm run lint      # Verifica problemas com ESLint
+npm run test      # Executa testes com Jest
+```
+
+---
+
+## 🧑‍💻 Autor
+
+**Rodrigo Albuquerque da Costa**
+
+---

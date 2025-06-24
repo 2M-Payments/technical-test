@@ -1,3 +1,12 @@
+# Solução do Desafio - [Rodrigo Albuquerque da Costa]
+
+## 🚀 Como Executar a Aplicação
+
+As instruções detalhadas para rodar o **Frontend** e o **Backend** estão em seus respectivos READMEs. Por favor, acesse os links abaixo:
+
+* **[➡️ Instruções para o Frontend](./frontend/README.md)**
+* **[⬅️ Instruções para o Backend](./backend/README.md)**
+
 # Projeto CRUD Full Stack
 
 Este repositório serve para fins do teste técnico CRUD full stack utilizando **Node.js com TypeScript e TypeORM** para o back-end e **React com TypeScript** para o front-end. O foco da avaliação será a **qualidade do código**, os **padrões de commit** e a **organização do projeto**, e não apenas a funcionalidade em si.
