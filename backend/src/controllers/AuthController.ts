@@ -1,8 +1,7 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
-import { AuthService } from '../services/authService';
+import { AuthService } from '../services/AuthService';
 import { registerSchema, loginSchema } from '../schemas/authSchema';
-
 export class AuthController {
   register = async (req: Request, res: Response) => {
       const data = registerSchema.parse(req.body);

@@ -6,7 +6,7 @@ import {
   createManyTransactionsSchema,
   deleteManyTransactionsSchema,
 } from '../../schemas/transactionSchema'; 
-import { TransactionType } from '../../entities/transaction';
+import { TransactionType } from '../../entities/Transaction';
 
 describe('Transaction Schemas', () => {
   describe('createTransactionSchema', () => {

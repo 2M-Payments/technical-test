@@ -1,8 +1,8 @@
 import 'reflect-metadata';
 import { container } from 'tsyringe';
 import { Repository } from 'typeorm';
-import { AuthService } from '../../services/authService';
-import { User } from '../../entities/user';
+import { AuthService } from '../../services/AuthService';
+import { User } from '../../entities/User';
 import * as hashUtils from '../../utils/hash';
 import * as jwtUtils from '../../utils/jwt';   
 

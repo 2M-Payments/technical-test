@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { TransactionType } from '../entities/transaction';
+import { TransactionType } from '../entities/Transaction';
 
 export const createTransactionSchema = z.object({
   title: z.string().min(1, 'O título é obrigatório'),

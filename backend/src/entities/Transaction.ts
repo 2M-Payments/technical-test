@@ -6,7 +6,7 @@ import {
   UpdateDateColumn,
   ManyToOne,
 } from 'typeorm';
-import { User } from './user';
+import { User } from './User';
 
 export enum TransactionType {
   ENTRADA = 'ganho', 
