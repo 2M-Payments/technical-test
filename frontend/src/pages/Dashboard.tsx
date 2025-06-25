@@ -68,7 +68,7 @@ const DashboardPage: FC = () => {
       )}
 
       {showForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <TransactionForm onClose={() => setShowForm(false)} />
           </div>
@@ -76,7 +76,7 @@ const DashboardPage: FC = () => {
       )}
 
       {showBatchForm && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div className="fixed inset-0 bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center">
           <div className="bg-white rounded-xl p-6 shadow-lg">
             <BatchTransactionForm onClose={() => setShowBatchForm(false)} />
           </div>

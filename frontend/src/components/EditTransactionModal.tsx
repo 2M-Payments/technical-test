@@ -14,7 +14,7 @@ const EditTransactionModal = ({ transaction, onClose }: EditModalProps) => {
   const { editTransaction } = useTransaction();
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+    <div className="fixed inset-0  bg-opacity-50 backdrop-blur-sm z-50 flex items-center justify-center">
       <div className="bg-white rounded-xl p-6 shadow-lg w-full max-w-md">
         <h2 className="text-xl font-semibold mb-4">Editar Transação</h2>
         <Formik
