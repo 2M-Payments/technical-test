@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { verifyAccessToken } from "@/utils/jwt.util";
 
-export function ensureAuthenticated(request: Request, response: Response, next: NextFunction) {
+export function authenticate(request: Request, response: Response, next: NextFunction) {
   try {
     const authHeader = request.headers.authorization;
 
@@ -19,7 +19,7 @@ export function ensureAuthenticated(request: Request, response: Response, next: 
 
     request.userId = userId;
     return next();
-  } catch (error) {
+  } catch {
     return response.status(401).json({ message: "Unauthorized" });
   }
 }
