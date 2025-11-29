@@ -2,36 +2,21 @@ import "dotenv/config";
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
-import session from "express-session";
-import { parseAllowedOrigins, getSessionTtl } from "@/utils/env";
+import "@/container";
+import { parseAllowedOrigins } from "@/utils/parse-allowed-origins.util";
+import { authRoutes } from "@/routes/auth.route";
+import { errorHandler } from "@/middlewares/error-handler.middleware";
 
 const app = express();
 
-app.use(
-  cors({
+app.use(cors({
     origin: parseAllowedOrigins(process.env.CORS_ORIGIN),
     credentials: true,
-  })
-);
+}));
 
 app.use(express.json());
 
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET ?? "secret",
-    resave: false,
-    saveUninitialized: false,
-    rolling: true,
-    cookie: {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      maxAge: getSessionTtl(process.env.SESSION_TTL_MINUTES),
-    },
-  })
-);
-
-app.get("/", (_req, res) => {
-  res.json({ status: 200 });
-});
+app.use("/api/v1/auth", authRoutes);
+app.use(errorHandler);
 
 export { app };

@@ -2,7 +2,7 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
- CreateDateColumn,
+  CreateDateColumn,
   UpdateDateColumn,
 } from "typeorm";
 
@@ -17,16 +17,13 @@ export class User {
   @Column({ unique: true, length: 180 })
   email!: string;
 
-  @Column()
+  @Column({ select: false })
   password!: string;
 
-  @Column({ default: true })
-  isActive!: boolean;
-
-  @CreateDateColumn({ name: "created_at" })
+  @CreateDateColumn()
   createdAt!: Date;
 
-  @UpdateDateColumn({ name: "updated_at" })
+  @UpdateDateColumn()
   updatedAt!: Date;
 }
 
