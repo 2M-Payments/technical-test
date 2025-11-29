@@ -6,8 +6,8 @@ import { registerUserSchema, loginSchema } from "@/schemas/auth.schema";
 const authRoutes = Router();
 const authController = new AuthController();
 
-authRoutes.post("/register", validateRequest(registerUserSchema), authController.register.bind(authController));
-authRoutes.post("/login", validateRequest(loginSchema), authController.login.bind(authController));
+authRoutes.post("/register", validateRequest(registerUserSchema), authController.register);
+authRoutes.post("/login", validateRequest(loginSchema), authController.login);
 
 export { authRoutes };
 
