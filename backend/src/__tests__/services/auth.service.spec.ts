@@ -24,7 +24,7 @@ describe("AuthService", () => {
 
     return {
       repository,
-      instance: repository as unknown as UserRepository,
+      instance: repository as Partial<UserRepository> as UserRepository,
     };
   };
 

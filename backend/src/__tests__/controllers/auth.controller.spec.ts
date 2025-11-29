@@ -22,28 +22,31 @@ describe("AuthController", () => {
 
   describe("register", () => {
     it("deve retornar 201 ao registrar", async () => {
-      const req = { body: { name: "Daniel Felizardo", email: "daniel@email.com", password: "12345678" } } as Request;
+      const validatedBody = { name: "Daniel Felizardo", email: "daniel@email.com", password: "12345678" };
+      const req = { validated: { body: validatedBody } } as Request;
       const res = mockResponse();
       const next = jest.fn() as NextFunction;
 
       const mockResult = { user: { id: "1", name: "Daniel Felizardo", email: "daniel@email.com" }, token: "token" };
       const mockService = { register: jest.fn().mockResolvedValue(mockResult) };
-      jest.spyOn(container, "resolve").mockReturnValue(mockService as unknown as AuthService);
+      jest.spyOn(container, "resolve").mockReturnValue(mockService);
 
       await controller.register(req, res, next);
 
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith(mockResult);
+      expect(mockService.register).toHaveBeenCalledWith(validatedBody);
     });
 
     it("deve chamar next em caso de erro", async () => {
-      const req = { body: {} } as Request;
+      const validatedBody = { name: "Daniel", email: "daniel@email.com", password: "12345678" };
+      const req = { validated: { body: validatedBody } } as Request;
       const res = mockResponse();
       const next = jest.fn() as NextFunction;
 
       const error = new Error("Erro");
       const mockService = { register: jest.fn().mockRejectedValue(error) };
-      jest.spyOn(container, "resolve").mockReturnValue(mockService as unknown as AuthService);
+      jest.spyOn(container, "resolve").mockReturnValue(mockService);
 
       await controller.register(req, res, next);
 
@@ -53,27 +56,30 @@ describe("AuthController", () => {
 
   describe("login", () => {
     it("deve retornar 200 ao logar", async () => {
-      const req = { body: { email: "daniel@email.com", password: "12345678" } } as Request;
+      const validatedBody = { email: "daniel@email.com", password: "12345678" };
+      const req = { validated: { body: validatedBody } } as Request;
       const res = mockResponse();
       const next = jest.fn() as NextFunction;
 
       const mockResult = { user: { id: "1", name: "Daniel Felizardo", email: "daniel@email.com" }, token: "token" };
       const mockService = { login: jest.fn().mockResolvedValue(mockResult) };
-      jest.spyOn(container, "resolve").mockReturnValue(mockService as unknown as AuthService);
+      jest.spyOn(container, "resolve").mockReturnValue(mockService);
 
       await controller.login(req, res, next);
 
       expect(res.json).toHaveBeenCalledWith(mockResult);
+      expect(mockService.login).toHaveBeenCalledWith(validatedBody);
     });
 
     it("deve chamar next em caso de erro", async () => {
-      const req = { body: {} } as Request;
+      const validatedBody = { email: "daniel@email.com", password: "12345678" };
+      const req = { validated: { body: validatedBody } } as Request;
       const res = mockResponse();
       const next = jest.fn() as NextFunction;
 
       const error = new Error("Erro");
       const mockService = { login: jest.fn().mockRejectedValue(error) };
-      jest.spyOn(container, "resolve").mockReturnValue(mockService as unknown as AuthService);
+      jest.spyOn(container, "resolve").mockReturnValue(mockService);
 
       await controller.login(req, res, next);
 
