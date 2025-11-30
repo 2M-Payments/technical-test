@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
-import { Login } from "@/pages/login";
+import { Login } from "@/pages/public/login";
 import authReducer from "@/features/auth/auth-slice";
 import { api } from "@/services/api";
 
