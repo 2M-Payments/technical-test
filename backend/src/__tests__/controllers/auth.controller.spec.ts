@@ -98,5 +98,5 @@ describe("AuthController", () => {
       expect(res.clearCookie).toHaveBeenCalledWith("token", expect.any(Object));
       expect(res.json).toHaveBeenCalledWith({ message: "Logout realizado com sucesso" });
     });
-  });
+});
 });
