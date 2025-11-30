@@ -16,8 +16,8 @@ describe("authenticate middleware", () => {
     jest.clearAllMocks();
   });
 
-  it("deve retornar 401 sem header Authorization", () => {
-    const req = { headers: {} } as Request;
+  it("deve retornar 401 sem cookie token", () => {
+    const req = { cookies: {} } as unknown as Request;
     const res = mockResponse();
     const next = jest.fn() as NextFunction;
 
@@ -28,7 +28,7 @@ describe("authenticate middleware", () => {
   });
 
   it("deve retornar 401 com token inválido", () => {
-    const req = { headers: { authorization: "Bearer invalid" } } as Request;
+    const req = { cookies: { token: "invalid" } } as unknown as Request;
     const res = mockResponse();
     const next = jest.fn() as NextFunction;
 
@@ -43,7 +43,7 @@ describe("authenticate middleware", () => {
   });
 
   it("deve chamar next com token válido", () => {
-    const req = { headers: { authorization: "Bearer valid-token" } } as Request;
+    const req = { cookies: { token: "valid-token" } } as unknown as Request;
     const res = mockResponse();
     const next = jest.fn() as NextFunction;
 
@@ -55,4 +55,3 @@ describe("authenticate middleware", () => {
     expect(req.userId).toBe("user-123");
   });
 });
-

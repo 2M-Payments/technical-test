@@ -2,9 +2,6 @@ import "reflect-metadata";
 import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
 import { AuthController } from "@/controllers/auth.controller";
-import { AuthService } from "@/services/auth.service";
-
-jest.mock("@/services/auth.service");
 
 describe("AuthController", () => {
   const controller = new AuthController();
@@ -13,6 +10,8 @@ describe("AuthController", () => {
     const res = {} as Response;
     res.status = jest.fn().mockReturnValue(res);
     res.json = jest.fn().mockReturnValue(res);
+    res.cookie = jest.fn().mockReturnValue(res);
+    res.clearCookie = jest.fn().mockReturnValue(res);
     return res;
   };
 
@@ -33,8 +32,9 @@ describe("AuthController", () => {
 
       await controller.register(req, res, next);
 
+      expect(res.cookie).toHaveBeenCalledWith("token", "token", expect.any(Object));
       expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith(mockResult);
+      expect(res.json).toHaveBeenCalledWith({ user: mockResult.user });
       expect(mockService.register).toHaveBeenCalledWith(validatedBody);
     });
 
@@ -67,7 +67,8 @@ describe("AuthController", () => {
 
       await controller.login(req, res, next);
 
-      expect(res.json).toHaveBeenCalledWith(mockResult);
+      expect(res.cookie).toHaveBeenCalledWith("token", "token", expect.any(Object));
+      expect(res.json).toHaveBeenCalledWith({ user: mockResult.user });
       expect(mockService.login).toHaveBeenCalledWith(validatedBody);
     });
 
@@ -86,5 +87,16 @@ describe("AuthController", () => {
       expect(next).toHaveBeenCalledWith(error);
     });
   });
-});
 
+  describe("logout", () => {
+    it("deve limpar o cookie e retornar mensagem", async () => {
+      const req = {} as Request;
+      const res = mockResponse();
+
+      await controller.logout(req, res);
+
+      expect(res.clearCookie).toHaveBeenCalledWith("token", expect.any(Object));
+      expect(res.json).toHaveBeenCalledWith({ message: "Logout realizado com sucesso" });
+    });
+  });
+});
