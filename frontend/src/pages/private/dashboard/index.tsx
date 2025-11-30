@@ -29,6 +29,8 @@ export function Dashboard() {
       pagination={data?.meta}
       onPageChange={setPage}
       onLimitChange={handleLimitChange}
+      actionLabel="Cadastrar produto"
+      onAction={() => {}}
     />
   );
 }

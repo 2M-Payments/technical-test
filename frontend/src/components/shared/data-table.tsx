@@ -36,6 +36,8 @@ type DataTableProps<T> = {
   pagination?: PaginationMeta;
   onPageChange?: (page: number) => void;
   onLimitChange?: (limit: number) => void;
+  actionLabel?: string;
+  onAction?: () => void;
 };
 
 const LIMIT_OPTIONS = [5, 10, 20, 50];
@@ -47,9 +49,16 @@ export function DataTable<T>({
   pagination,
   onPageChange,
   onLimitChange,
+  actionLabel,
+  onAction,
 }: DataTableProps<T>) {
   return (
     <div className="space-y-4">
+      {actionLabel && (
+        <div className="flex justify-end">
+          <Button onClick={onAction}>{actionLabel}</Button>
+        </div>
+      )}
       <div className="border border-zinc-800 rounded-lg overflow-hidden">
         <Table>
           <TableHeader>
