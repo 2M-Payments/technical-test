@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { PackageIcon } from "lucide-react";
-import { useListProductsQuery } from "@/features/products/products-api";
+import {
+  useListProductsQuery,
+  useDeleteManyProductsMutation,
+  useDeleteAllProductsMutation,
+} from "@/features/products/products-api";
 import { DataTable } from "@/components/shared/data-table";
 import { Loader } from "@/components/shared/loader";
 import { EmptyState } from "@/components/shared/empty-state";
@@ -11,6 +15,8 @@ export function Dashboard() {
   const [limit, setLimit] = useState(10);
 
   const { data, isLoading } = useListProductsQuery({ page, limit });
+  const [deleteMany] = useDeleteManyProductsMutation();
+  const [deleteAll] = useDeleteAllProductsMutation();
 
   const handleLimitChange = (newLimit: number) => {
     setLimit(newLimit);
@@ -29,8 +35,12 @@ export function Dashboard() {
       pagination={data?.meta}
       onPageChange={setPage}
       onLimitChange={handleLimitChange}
-      actionLabel="Cadastrar produto"
-      onAction={() => {}}
+      resource={{
+        name: "produto",
+        modal: "product",
+        deleteMany: (ids) => deleteMany(ids).unwrap(),
+        deleteAll: () => deleteAll().unwrap(),
+      }}
     />
   );
 }
