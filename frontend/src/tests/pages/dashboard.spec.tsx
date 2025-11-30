@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { configureStore } from "@reduxjs/toolkit";
@@ -8,28 +7,15 @@ import { Dashboard } from "@/pages/private/dashboard";
 import authReducer from "@/features/auth/auth-slice";
 import { api } from "@/services/api";
 
-const mockNavigate = vi.fn();
-const mockLogout = vi.fn();
+const mockListProducts = vi.fn();
 
-vi.mock("react-router-dom", async () => {
-  const actual = await vi.importActual("react-router-dom");
+vi.mock("@/features/products/products-api", async () => {
+  const actual = await vi.importActual("@/features/products/products-api");
   return {
     ...actual,
-    useNavigate: () => mockNavigate,
+    useListProductsQuery: () => mockListProducts(),
   };
 });
-
-vi.mock("@/hooks/use-auth", () => ({
-  useAuth: () => ({
-    user: {
-      id: "123",
-      name: "Daniel Felizardo",
-      email: "daniel@email.com",
-    },
-    isAuthenticated: true,
-    logout: mockLogout,
-  }),
-}));
 
 const createStore = () =>
   configureStore({
@@ -39,15 +25,6 @@ const createStore = () =>
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware().concat(api.middleware),
-    preloadedState: {
-      auth: {
-        user: {
-          id: "123",
-          name: "Daniel Felizardo",
-          email: "daniel@email.com",
-        },
-      },
-    },
   });
 
 const renderDashboard = () => {
@@ -66,29 +43,70 @@ describe("Dashboard", () => {
     vi.clearAllMocks();
   });
 
-  it("deve renderizar dados do usuário", () => {
+  it("deve mostrar loader enquanto carrega", () => {
+    mockListProducts.mockReturnValue({
+      data: undefined,
+      isLoading: true,
+    });
+
     renderDashboard();
 
-    expect(screen.getByText("Dashboard")).toBeInTheDocument();
-    expect(screen.getByText(/ID: 123/)).toBeInTheDocument();
-    expect(screen.getByText(/Nome: Daniel Felizardo/)).toBeInTheDocument();
-    expect(screen.getByText(/E-mail: daniel@email.com/)).toBeInTheDocument();
+    expect(document.querySelector(".animate-spin")).toBeInTheDocument();
   });
 
-  it("deve renderizar botão de logout", () => {
+  it("deve mostrar estado vazio quando não há produtos", () => {
+    mockListProducts.mockReturnValue({
+      data: { data: [], meta: { total: 0, page: 1, limit: 10, totalPages: 0 } },
+      isLoading: false,
+    });
+
     renderDashboard();
 
-    expect(screen.getByRole("button", { name: "Sair" })).toBeInTheDocument();
+    expect(screen.getByText("Nenhum produto cadastrado")).toBeInTheDocument();
   });
 
-  it("deve chamar logout ao clicar no botão", async () => {
-    const user = userEvent.setup();
-    mockLogout.mockResolvedValue(undefined);
+  it("deve renderizar tabela com produtos", () => {
+    mockListProducts.mockReturnValue({
+      data: {
+        data: [
+          {
+            id: "1",
+            name: "Produto Teste",
+            category: "Eletrônicos",
+            quantity: 10,
+            price: 99.9,
+          },
+        ],
+        meta: { total: 1, page: 1, limit: 10, totalPages: 1 },
+      },
+      isLoading: false,
+    });
 
     renderDashboard();
 
-    await user.click(screen.getByRole("button", { name: "Sair" }));
+    expect(screen.getByText("Produto Teste")).toBeInTheDocument();
+    expect(screen.getByText("Eletrônicos")).toBeInTheDocument();
+  });
 
-    expect(mockLogout).toHaveBeenCalled();
+  it("deve renderizar botão de cadastrar produto", () => {
+    mockListProducts.mockReturnValue({
+      data: {
+        data: [
+          {
+            id: "1",
+            name: "Produto Teste",
+            category: "Categoria",
+            quantity: 10,
+            price: 99.9,
+          },
+        ],
+        meta: { total: 1, page: 1, limit: 10, totalPages: 1 },
+      },
+      isLoading: false,
+    });
+
+    renderDashboard();
+
+    expect(screen.getByRole("button", { name: "Cadastrar produto" })).toBeInTheDocument();
   });
 });
