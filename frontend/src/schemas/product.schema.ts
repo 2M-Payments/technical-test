@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const productSchema = z.object({
+const productBaseSchema = z.object({
   name: z
     .string()
     .min(3, "Nome deve ter no mínimo 3 caracteres")
@@ -22,4 +22,9 @@ export const productSchema = z.object({
     .max(80, "Categoria deve ter no máximo 80 caracteres"),
 });
 
+export const productSchema = z.object({
+  products: z.array(productBaseSchema).min(1, "Adicione pelo menos um produto"),
+});
+
 export type ProductFormData = z.infer<typeof productSchema>;
+export type SingleProductData = z.infer<typeof productBaseSchema>;
