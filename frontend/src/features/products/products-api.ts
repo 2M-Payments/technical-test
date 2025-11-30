@@ -3,7 +3,7 @@ import { api } from "@/services/api";
 export type Product = {
   id: string;
   name: string;
-  description: string;
+  description?: string;
   quantity: number;
   price: number;
   category: string;
@@ -18,6 +18,8 @@ type ProductInput = {
   price: number;
   category: string;
 };
+
+type CreateProductInput = ProductInput | ProductInput[];
 
 type ListProductsParams = {
   page?: number;
@@ -46,10 +48,10 @@ export const productsApi = api.injectEndpoints({
 
     getProduct: builder.query<Product, string>({
       query: (id) => `/products/${id}`,
-      providesTags: (_result, _error, id) => [{ type: "Product", id }],
+      providesTags: ["Product"],
     }),
 
-    createProduct: builder.mutation<Product, ProductInput>({
+    createProduct: builder.mutation<Product | Product[], CreateProductInput>({
       query: (data) => ({
         url: "/products",
         method: "POST",
@@ -64,7 +66,7 @@ export const productsApi = api.injectEndpoints({
         method: "PATCH",
         body: data,
       }),
-      invalidatesTags: (_result, _error, { id }) => [{ type: "Product", id }, "Product"],
+      invalidatesTags: ["Product"],
     }),
 
     deleteProduct: builder.mutation<void, string>({
