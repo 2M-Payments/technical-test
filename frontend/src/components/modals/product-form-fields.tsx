@@ -2,9 +2,10 @@ import { FormControl, FormField, FormItem, FormMessage } from "@/components/ui/f
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import type { Control } from "react-hook-form";
+import type { ProductFormData } from "@/schemas/product.schema";
 
 type ProductFormFieldsProps = {
-  control: Control<any>;
+  control: Control<ProductFormData>;
   index: number;
 };
 

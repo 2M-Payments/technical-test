@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useForm, useFieldArray, type Control } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner";
 import { PlusIcon, Trash2Icon } from "lucide-react";
@@ -9,7 +9,7 @@ import {
   useUpdateProductMutation,
   useGetProductQuery,
 } from "@/features/products/products-api";
-import { productSchema, type SingleProductData } from "@/schemas/product.schema";
+import { productSchema, type SingleProductData, type ProductFormData } from "@/schemas/product.schema";
 import { Modal } from "@/components/shared/modal";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
@@ -135,7 +135,7 @@ export function ProductModal() {
                     )}
                   </div>
                 )}
-                <ProductFormFields control={form.control} index={index} />
+                <ProductFormFields control={form.control as Control<ProductFormData>} index={index} />
               </div>
             ))}
           </div>
