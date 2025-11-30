@@ -58,4 +58,18 @@ export class AuthService {
       token: generateAccessToken(user.id),
     };
   }
+
+  async me(userId: string) {
+    const user = await this.userRepository.findById(userId);
+
+    if (!user) {
+      throw new AppError("Usuário não encontrado", 404);
+    }
+
+    return {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    };
+  }
 }

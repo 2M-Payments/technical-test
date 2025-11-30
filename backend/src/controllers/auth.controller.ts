@@ -24,4 +24,15 @@ export class AuthController {
       return next(error);
     }
   }
+
+  async me(request: Request, response: Response, next: NextFunction) {
+    try {
+      const authService = container.resolve(AuthService);
+      const result = await authService.me(request.userId!);
+
+      return response.json(result);
+    } catch (error) {
+      return next(error);
+    }
+  }
 }
