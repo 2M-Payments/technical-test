@@ -10,6 +10,7 @@ import type { Product } from "@/features/products/products-api";
 const mockCloseModal = vi.fn();
 const mockCreateProduct = vi.fn();
 const mockUpdateProduct = vi.fn();
+const mockGetProduct = vi.fn();
 let mockModalState = { modal: null as string | null, data: null as unknown };
 
 vi.mock("@/contexts/modal-context", () => ({
@@ -26,6 +27,7 @@ vi.mock("@/features/products/products-api", async () => {
     ...actual,
     useCreateProductMutation: () => [mockCreateProduct, { isLoading: false }],
     useUpdateProductMutation: () => [mockUpdateProduct, { isLoading: false }],
+    useGetProductQuery: () => mockGetProduct(),
   };
 });
 
@@ -57,6 +59,10 @@ describe("ProductModal", () => {
     mockUpdateProduct.mockReturnValue({
       unwrap: vi.fn().mockResolvedValue({}),
     });
+    mockGetProduct.mockReturnValue({
+      data: undefined,
+      isLoading: false,
+    });
   });
 
   it("não deve renderizar quando modal não é 'product'", () => {
@@ -77,7 +83,6 @@ describe("ProductModal", () => {
     expect(screen.getByLabelText("Descrição")).toBeInTheDocument();
     expect(screen.getByLabelText("Quantidade")).toBeInTheDocument();
     expect(screen.getByLabelText("Preço")).toBeInTheDocument();
-    expect(screen.getByLabelText("Categoria")).toBeInTheDocument();
   });
 
   it("deve renderizar formulário de edição", () => {
@@ -87,12 +92,15 @@ describe("ProductModal", () => {
       description: "Descrição teste",
       quantity: 10,
       price: 99.9,
-      category: "Eletrônicos",
       createdAt: "2024-01-01",
       updatedAt: "2024-01-01",
     };
 
-    mockModalState = { modal: "product", data: product };
+    mockModalState = { modal: "product", data: "1" };
+    mockGetProduct.mockReturnValue({
+      data: product,
+      isLoading: false,
+    });
 
     renderProductModal();
 
@@ -116,12 +124,15 @@ describe("ProductModal", () => {
       description: "Descrição teste",
       quantity: 10,
       price: 99.9,
-      category: "Eletrônicos",
       createdAt: "2024-01-01",
       updatedAt: "2024-01-01",
     };
 
-    mockModalState = { modal: "product", data: product };
+    mockModalState = { modal: "product", data: "1" };
+    mockGetProduct.mockReturnValue({
+      data: product,
+      isLoading: false,
+    });
 
     renderProductModal();
 

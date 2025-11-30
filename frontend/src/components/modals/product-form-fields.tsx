@@ -89,24 +89,6 @@ export function ProductFormFields({ control, index }: ProductFormFieldsProps) {
           )}
         />
       </div>
-
-      <FormField
-        control={control}
-        name={`products.${index}.category`}
-        render={({ field }) => (
-          <FormItem>
-            <FormControl>
-              <Input
-                label="Categoria"
-                placeholder="Categoria do produto"
-                className="border-zinc-700 bg-zinc-800/50 text-zinc-100"
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
-      />
     </div>
   );
 }

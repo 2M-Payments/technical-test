@@ -26,9 +26,6 @@ export class Product {
   @Column({ type: "double" })
   price!: number;
 
-  @Column({ length: 80 })
-  category!: string;
-
   @Column()
   userId!: string;
 

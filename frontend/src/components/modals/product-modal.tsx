@@ -22,7 +22,6 @@ const defaultProduct: SingleProductData = {
   description: "",
   quantity: 0,
   price: 0,
-  category: "",
 };
 
 export function ProductModal() {
@@ -60,7 +59,6 @@ export function ProductModal() {
           description: product.description || "",
           quantity: product.quantity,
           price: product.price,
-          category: product.category,
         }],
       });
     } else if (!isEditing) {

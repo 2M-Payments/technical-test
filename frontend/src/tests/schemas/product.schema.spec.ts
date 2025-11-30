@@ -10,7 +10,6 @@ describe("productSchema", () => {
           description: "Descrição do produto",
           quantity: 10,
           price: 99.9,
-          category: "Eletrônicos",
         },
       ],
     };
@@ -27,14 +26,12 @@ describe("productSchema", () => {
           description: "Descrição do produto 1",
           quantity: 10,
           price: 99.9,
-          category: "Eletrônicos",
         },
         {
           name: "Produto 2",
           description: "Descrição do produto 2",
           quantity: 5,
           price: 49.9,
-          category: "Roupas",
         },
       ],
     };
@@ -60,7 +57,6 @@ describe("productSchema", () => {
           description: "Descrição do produto",
           quantity: 10,
           price: 99.9,
-          category: "Eletrônicos",
         },
       ],
     };
@@ -77,7 +73,6 @@ describe("productSchema", () => {
           description: "Desc",
           quantity: 10,
           price: 99.9,
-          category: "Eletrônicos",
         },
       ],
     };
@@ -94,7 +89,6 @@ describe("productSchema", () => {
           description: "Descrição do produto",
           quantity: -1,
           price: 99.9,
-          category: "Eletrônicos",
         },
       ],
     };
@@ -111,24 +105,6 @@ describe("productSchema", () => {
           description: "Descrição do produto",
           quantity: 10,
           price: -10,
-          category: "Eletrônicos",
-        },
-      ],
-    };
-
-    const result = productSchema.safeParse(data);
-    expect(result.success).toBe(false);
-  });
-
-  it("deve rejeitar categoria curta", () => {
-    const data = {
-      products: [
-        {
-          name: "Produto Teste",
-          description: "Descrição do produto",
-          quantity: 10,
-          price: 99.9,
-          category: "A",
         },
       ],
     };
@@ -145,7 +121,6 @@ describe("productSchema", () => {
           description: "Descrição do produto",
           quantity: 0,
           price: 99.9,
-          category: "Eletrônicos",
         },
       ],
     };
@@ -162,7 +137,6 @@ describe("productSchema", () => {
           description: "Descrição do produto",
           quantity: 10,
           price: 0,
-          category: "Eletrônicos",
         },
       ],
     };

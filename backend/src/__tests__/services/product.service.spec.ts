@@ -37,7 +37,6 @@ const makeProduct = (): Product => ({
   description: "Descrição",
   quantity: 10,
   price: 100,
-  category: "Tecnologia",
   userId: USER_ID,
   user: { id: USER_ID } as User,
   createdAt: new Date(),
@@ -57,7 +56,6 @@ describe("ProductService", () => {
       description: "Descrição",
       quantity: 10,
       price: 100,
-      category: "Tecnologia",
     };
 
     repository.create.mockResolvedValue(makeProduct());
@@ -77,7 +75,6 @@ describe("ProductService", () => {
         description: "Desc",
         quantity: 5,
         price: 50,
-        category: "Tech",
       },
     ];
 

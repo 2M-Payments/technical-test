@@ -80,7 +80,6 @@ describe("Dashboard", () => {
           {
             id: "1",
             name: "Produto Teste",
-            category: "Eletrônicos",
             quantity: 10,
             price: 99.9,
           },
@@ -93,7 +92,6 @@ describe("Dashboard", () => {
     renderDashboard();
 
     expect(screen.getByText("Produto Teste")).toBeInTheDocument();
-    expect(screen.getByText("Eletrônicos")).toBeInTheDocument();
   });
 
   it("deve renderizar botão de cadastrar produto", () => {
@@ -103,7 +101,6 @@ describe("Dashboard", () => {
           {
             id: "1",
             name: "Produto Teste",
-            category: "Categoria",
             quantity: 10,
             price: 99.9,
           },
@@ -122,8 +119,8 @@ describe("Dashboard", () => {
     mockListProducts.mockReturnValue({
       data: {
         data: [
-          { id: "1", name: "Produto 1", category: "Cat 1", quantity: 5, price: 50 },
-          { id: "2", name: "Produto 2", category: "Cat 2", quantity: 10, price: 100 },
+          { id: "1", name: "Produto 1", quantity: 5, price: 50 },
+          { id: "2", name: "Produto 2", quantity: 10, price: 100 },
         ],
         meta: { total: 2, page: 1, limit: 10, totalPages: 1 },
       },
@@ -140,7 +137,7 @@ describe("Dashboard", () => {
     mockListProducts.mockReturnValue({
       data: {
         data: [
-          { id: "1", name: "Produto 1", category: "Cat 1", quantity: 5, price: 50 },
+          { id: "1", name: "Produto 1", quantity: 5, price: 50 },
         ],
         meta: { total: 1, page: 1, limit: 10, totalPages: 1 },
       },
@@ -156,7 +153,7 @@ describe("Dashboard", () => {
     mockListProducts.mockReturnValue({
       data: {
         data: [
-          { id: "1", name: "Produto 1", category: "Cat 1", quantity: 5, price: 50 },
+          { id: "1", name: "Produto 1", quantity: 5, price: 50 },
         ],
         meta: { total: 25, page: 1, limit: 10, totalPages: 3 },
       },

@@ -5,7 +5,6 @@ const productBaseSchema = z.object({
   description: z.string().trim().min(5).max(500),
   quantity: z.coerce.number().int().nonnegative(),
   price: z.coerce.number().nonnegative(),
-  category: z.string().trim().min(2).max(80),
 });
 
 export const multipleProductsSchema = z.array(productBaseSchema).min(1).max(100);

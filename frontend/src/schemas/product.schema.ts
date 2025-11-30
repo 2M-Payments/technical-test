@@ -16,10 +16,6 @@ const productBaseSchema = z.object({
   price: z.coerce
     .number()
     .nonnegative("Preço não pode ser negativo"),
-  category: z
-    .string()
-    .min(2, "Categoria deve ter no mínimo 2 caracteres")
-    .max(80, "Categoria deve ter no máximo 80 caracteres"),
 });
 
 export const productSchema = z.object({

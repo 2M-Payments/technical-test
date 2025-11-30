@@ -93,7 +93,7 @@ describe("DataTable", () => {
     expect(mockOpenModal).toHaveBeenCalledWith("item");
   });
 
-  it("deve abrir modal com dados ao clicar na linha", async () => {
+  it("deve abrir modal com ID ao clicar na linha", async () => {
     const user = userEvent.setup();
 
     render(
@@ -110,7 +110,7 @@ describe("DataTable", () => {
 
     await user.click(screen.getByText("Item 1"));
 
-    expect(mockOpenModal).toHaveBeenCalledWith("item", mockData[0]);
+    expect(mockOpenModal).toHaveBeenCalledWith("item", "1");
   });
 
   it("deve renderizar paginação quando pagination é passado", () => {

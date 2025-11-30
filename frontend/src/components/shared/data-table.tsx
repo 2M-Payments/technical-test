@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, type MouseEvent, type ReactNode } from "react";
 import { ChevronLeftIcon, ChevronRightIcon, Trash2Icon } from "lucide-react";
 import { toast } from "sonner";
 import { useModal } from "@/contexts/modal-context";
@@ -22,7 +22,7 @@ import {
 export type Column<T> = {
   key: keyof T | string;
   header: string;
-  render?: (item: T) => React.ReactNode;
+  render?: (item: T) => ReactNode;
 };
 
 export type PaginationMeta = {
@@ -65,7 +65,7 @@ export function DataTable<T>({
   const someSelected = selectedIds.length > 0 && selectedIds.length < data.length;
   const hasDeleteActions = resource?.deleteMany || resource?.deleteAll;
 
-  const toggleSelectAll = (e: React.MouseEvent) => {
+  const toggleSelectAll = (e: MouseEvent) => {
     e.stopPropagation();
     if (allSelected) {
       setSelectedIds([]);
@@ -74,7 +74,7 @@ export function DataTable<T>({
     }
   };
 
-  const toggleSelect = (e: React.MouseEvent, id: string) => {
+  const toggleSelect = (e: MouseEvent, id: string) => {
     e.stopPropagation();
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]

@@ -6,7 +6,6 @@ export type Product = {
   description?: string;
   quantity: number;
   price: number;
-  category: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -16,7 +15,6 @@ type ProductInput = {
   description: string;
   quantity: number;
   price: number;
-  category: string;
 };
 
 type CreateProductInput = ProductInput | ProductInput[];

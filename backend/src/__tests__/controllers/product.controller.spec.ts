@@ -37,7 +37,6 @@ describe("ProductController", () => {
       description: "Desc",
       quantity: 1,
       price: 100,
-      category: "Tech",
     };
     const req = mockRequest({
       validated: { body: validatedBody },
@@ -64,7 +63,6 @@ describe("ProductController", () => {
         description: "Desc",
         quantity: 1,
         price: 100,
-        category: "Tech",
       },
     ];
     const req = mockRequest({

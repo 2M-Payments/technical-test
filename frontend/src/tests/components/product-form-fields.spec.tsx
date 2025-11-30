@@ -16,7 +16,6 @@ function TestWrapper({ index = 0 }: { index?: number }) {
           description: "Descrição do produto",
           quantity: 10,
           price: 99.9,
-          category: "Eletrônicos",
         },
       ],
     },
@@ -37,7 +36,6 @@ describe("ProductFormFields", () => {
     expect(screen.getByLabelText("Descrição")).toBeInTheDocument();
     expect(screen.getByLabelText("Quantidade")).toBeInTheDocument();
     expect(screen.getByLabelText("Preço")).toBeInTheDocument();
-    expect(screen.getByLabelText("Categoria")).toBeInTheDocument();
   });
 
   it("deve renderizar valores padrão nos campos", () => {
@@ -47,7 +45,6 @@ describe("ProductFormFields", () => {
     expect(screen.getByDisplayValue("Descrição do produto")).toBeInTheDocument();
     expect(screen.getByDisplayValue("10")).toBeInTheDocument();
     expect(screen.getByDisplayValue("99.9")).toBeInTheDocument();
-    expect(screen.getByDisplayValue("Eletrônicos")).toBeInTheDocument();
   });
 
   it("deve renderizar campos com placeholders corretos", () => {
@@ -57,7 +54,6 @@ describe("ProductFormFields", () => {
     expect(screen.getByPlaceholderText("Descrição do produto")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("0")).toBeInTheDocument();
     expect(screen.getByPlaceholderText("0.00")).toBeInTheDocument();
-    expect(screen.getByPlaceholderText("Categoria do produto")).toBeInTheDocument();
   });
 });
 

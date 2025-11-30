@@ -79,7 +79,6 @@ describe("productsApi", () => {
         description: "Descrição do produto",
         quantity: 10,
         price: 99.9,
-        category: "Categoria",
       };
 
       const result = await store.dispatch(

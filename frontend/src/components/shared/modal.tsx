@@ -25,11 +25,9 @@ export function Modal({ name, title, description, children }: ModalProps) {
       <DialogContent className="border-zinc-800 bg-zinc-900 max-w-3xl sm:max-w-3xl">
         <DialogHeader>
           <DialogTitle className="text-zinc-100">{title}</DialogTitle>
-          {description && (
-            <DialogDescription className="text-zinc-400">
-              {description}
-            </DialogDescription>
-          )}
+          <DialogDescription className="text-zinc-400">
+            {description || "Preencha os campos abaixo"}
+          </DialogDescription>
         </DialogHeader>
         {children}
       </DialogContent>

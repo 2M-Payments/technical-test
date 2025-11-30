@@ -26,7 +26,7 @@ export class ProductRepository {
   async findAll({ page, limit, userId }: FindAllParams): Promise<{ products: Product[]; total: number }> {
     const [products, total] = await this.ormRepository.findAndCount({
       where: { userId },
-      select: ["id", "name", "quantity", "price", "category", "userId", "createdAt", "updatedAt"],
+      select: ["id", "name", "quantity", "price", "userId", "createdAt", "updatedAt"],
       skip: (page - 1) * limit,
       take: limit,
       order: { createdAt: "DESC" },

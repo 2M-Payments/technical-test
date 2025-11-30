@@ -11,7 +11,6 @@ describe("product.schema", () => {
     description: "Equipamento completo",
     quantity: 5,
     price: 4999.9,
-    category: "Tecnologia",
   };
 
   it("deve validar criação de produto", () => {
