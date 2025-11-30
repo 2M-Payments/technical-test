@@ -2,7 +2,6 @@ import "reflect-metadata";
 import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
 import { ProductController } from "@/controllers/product.controller";
-import { ProductService } from "@/services/product.service";
 
 jest.mock("@/services/product.service");
 

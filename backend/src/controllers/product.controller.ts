@@ -1,12 +1,18 @@
 import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
 import { ProductService } from "@/services/product.service";
+import {
+  CreateProductPayload,
+  DeleteManyProductsInput,
+  ListProductsQueryInput,
+  UpdateProductInput,
+} from "@/schemas/product.schema";
 
 export class ProductController {
   async create(request: Request, response: Response, next: NextFunction) {
     try {
       const productService = container.resolve(ProductService);
-      const product = await productService.create(request.validated!.body, request.userId);
+      const product = await productService.create(request.validated!.body as CreateProductPayload, request.userId);
       return response.status(201).json(product);
     } catch (error) {
       return next(error);
@@ -16,7 +22,7 @@ export class ProductController {
   async list(request: Request, response: Response, next: NextFunction) {
     try {
       const productService = container.resolve(ProductService);
-      const result = await productService.list(request.validated!.query, request.userId);
+      const result = await productService.list(request.validated!.query as ListProductsQueryInput, request.userId);
       return response.json(result);
     } catch (error) {
       return next(error);
@@ -36,7 +42,7 @@ export class ProductController {
   async update(request: Request, response: Response, next: NextFunction) {
     try {
       const productService = container.resolve(ProductService);
-      const product = await productService.update(request.params.id, request.validated!.body, request.userId);
+      const product = await productService.update(request.params.id, request.validated!.body as UpdateProductInput, request.userId);
       return response.json(product);
     } catch (error) {
       return next(error);
@@ -56,7 +62,7 @@ export class ProductController {
   async deleteMany(request: Request, response: Response, next: NextFunction) {
     try {
       const productService = container.resolve(ProductService);
-      const result = await productService.deleteMany(request.validated!.body, request.userId);
+      const result = await productService.deleteMany(request.validated!.body as DeleteManyProductsInput, request.userId);
       return response.json(result);
     } catch (error) {
       return next(error);

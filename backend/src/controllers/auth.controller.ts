@@ -2,12 +2,13 @@ import { Request, Response, NextFunction } from "express";
 import { container } from "tsyringe";
 import { AuthService } from "@/services/auth.service";
 import { COOKIE_OPTIONS } from "@/config/cookie";
+import { RegisterUserInput, LoginInput } from "@/schemas/auth.schema";
 
 export class AuthController {
   async register(request: Request, response: Response, next: NextFunction) {
     try {
       const authService = container.resolve(AuthService);
-      const { user, token } = await authService.register(request.validated!.body);
+      const { user, token } = await authService.register(request.validated!.body as RegisterUserInput);
 
       response.cookie("token", token, COOKIE_OPTIONS);
       return response.status(201).json({ user });
@@ -19,7 +20,7 @@ export class AuthController {
   async login(request: Request, response: Response, next: NextFunction) {
     try {
       const authService = container.resolve(AuthService);
-      const { user, token } = await authService.login(request.validated!.body);
+      const { user, token } = await authService.login(request.validated!.body as LoginInput);
 
       response.cookie("token", token, COOKIE_OPTIONS);
       return response.json({ user });

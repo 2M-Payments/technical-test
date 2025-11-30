@@ -3,9 +3,9 @@ declare global {
     interface Request {
       userId: string;
       validated?: {
-        body?: any;
-        query?: any;
-        params?: any;
+        body?: unknown;
+        query?: unknown;
+        params?: unknown;
       };
     }
   }
