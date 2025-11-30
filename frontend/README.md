@@ -1,73 +1,123 @@
-# React + TypeScript + Vite
+# Frontend - React Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação React desenvolvida com TypeScript, seguindo boas práticas de desenvolvimento moderno.
 
-Currently, two official plugins are available:
+## 🚀 Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19, TypeScript
+- Vite, Tailwind CSS
+- Redux Toolkit, React Router
+- React Hook Form, Zod
+- Radix UI, Vitest
+- ESLint
 
-## React Compiler
+## ⚙️ Configuração
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Variáveis de Ambiente
 
-## Expanding the ESLint configuration
+Crie um arquivo `.env` na raiz do projeto `frontend/`:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+VITE_API_URL=http://localhost:3001/api/v1
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Instalação
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+pnpm install
+pnpm dev
 ```
+
+## 📜 Scripts
+
+```bash
+pnpm dev              # Desenvolvimento
+pnpm build            # Build de produção
+pnpm preview          # Preview do build
+pnpm lint             # Verificar código
+```
+
+## 📁 Estrutura
+
+```
+src/
+├── components/       # Componentes React
+│   ├── layout/       # Layouts
+│   ├── modals/       # Modais
+│   ├── shared/       # Componentes compartilhados
+│   └── ui/           # Componentes UI (Radix UI)
+├── contexts/         # Contextos React
+├── features/         # Features (Redux slices e APIs)
+├── hooks/            # Custom hooks
+├── lib/              # Utilitários
+├── pages/            # Páginas
+│   ├── private/      # Páginas autenticadas
+│   └── public/       # Páginas públicas
+├── schemas/          # Schemas de validação (Zod)
+├── services/         # Serviços (API client)
+├── store/            # Configuração Redux
+└── tests/            # Testes
+```
+
+## 🏗️ Arquitetura
+
+### Gerenciamento de Estado
+
+- **Redux Toolkit** para estado global
+- **RTK Query** para requisições HTTP
+- Slices por feature (auth, products)
+
+### Roteamento
+
+- **React Router** para navegação
+- Rotas protegidas com `RouteGuard`
+- Redirecionamento automático baseado em autenticação
+
+### Validação
+
+- **Zod** para validação de schemas
+- **React Hook Form** para formulários
+- Validação integrada com resolvers
+
+### UI
+
+- **Radix UI** para componentes acessíveis
+- **Tailwind CSS** para estilização
+- **shadcn/ui** como base de componentes
+
+## 🔌 Rotas
+
+### Públicas
+
+```
+/login          # Login
+/register       # Registro
+```
+
+### Privadas
+
+```
+/dashboard      # Dashboard (requer autenticação)
+```
+
+## 🧪 Testes
+
+Testes com Vitest e Testing Library:
+
+```bash
+pnpm test
+```
+
+### Estrutura de Testes
+
+- Testes unitários para componentes
+- Testes de integração para features
+- Testes de hooks customizados
+- Setup com jsdom para ambiente DOM
+
+## 🎨 Componentes Principais
+
+- **DataTable**: Tabela de dados com paginação
+- **Modal**: Sistema de modais gerenciado por contexto
+- **RouteGuard**: Proteção de rotas
+- **AuthLoader**: Carregamento de estado de autenticação
