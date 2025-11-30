@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthLoader } from "@/components/shared/auth-loader";
 import { RouteGuard } from "@/components/shared/route-guard";
+import { PrivateLayout } from "@/components/layout/private-layout";
 import { Login } from "@/pages/public/login";
 import { Register } from "@/pages/public/register";
 import { Dashboard } from "@/pages/private/dashboard";
@@ -16,7 +17,9 @@ function App() {
         </Route>
 
         <Route element={<RouteGuard requireAuth={true} redirectTo="/login" />}>
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route element={<PrivateLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />

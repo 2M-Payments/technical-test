@@ -17,24 +17,18 @@ export function Dashboard() {
     setPage(1);
   };
 
-  return (
-    <div className="min-h-screen bg-zinc-950">
-      <main className="max-w-6xl mx-auto px-6 py-8">
-        {isLoading ? (
-          <Loader />
-        ) : data?.data.length === 0 ? (
-          <EmptyState icon={PackageIcon} title="Nenhum produto cadastrado" />
-        ) : (
-          <DataTable
-            data={data?.data ?? []}
-            columns={columns}
-            keyExtractor={(item) => item.id}
-            pagination={data?.meta}
-            onPageChange={setPage}
-            onLimitChange={handleLimitChange}
-          />
-        )}
-      </main>
-    </div>
+  return isLoading ? (
+    <Loader />
+  ) : data?.data.length === 0 ? (
+    <EmptyState icon={PackageIcon} title="Nenhum produto cadastrado" />
+  ) : (
+    <DataTable
+      data={data?.data ?? []}
+      columns={columns}
+      keyExtractor={(item) => item.id}
+      pagination={data?.meta}
+      onPageChange={setPage}
+      onLimitChange={handleLimitChange}
+    />
   );
 }
