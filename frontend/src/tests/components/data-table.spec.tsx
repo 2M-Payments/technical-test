@@ -1,4 +1,4 @@
-import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { DataTable, type Column } from "@/components/shared/data-table";
@@ -19,7 +19,16 @@ const columns: Column<TestItem>[] = [
   { key: "value", header: "Valor" },
 ];
 
+const mockOpenModal = vi.fn();
+vi.mock("@/contexts/modal-context", () => ({
+  useModal: () => ({ openModal: mockOpenModal }),
+}));
+
 describe("DataTable", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
   it("deve renderizar dados na tabela", () => {
     render(
       <DataTable
@@ -48,39 +57,60 @@ describe("DataTable", () => {
     expect(screen.getByText("Valor")).toBeInTheDocument();
   });
 
-  it("deve renderizar botão de ação quando actionLabel é passado", () => {
-    const onAction = vi.fn();
-
+  it("deve renderizar botão de cadastrar quando resource é passado", () => {
     render(
       <DataTable
         data={mockData}
         columns={columns}
         keyExtractor={(item) => item.id}
-        actionLabel="Adicionar"
-        onAction={onAction}
+        resource={{
+          name: "item",
+          modal: "item",
+        }}
       />
     );
 
-    expect(screen.getByRole("button", { name: "Adicionar" })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Cadastrar item" })).toBeInTheDocument();
   });
 
-  it("deve chamar onAction ao clicar no botão", async () => {
+  it("deve chamar openModal ao clicar no botão de cadastrar", async () => {
     const user = userEvent.setup();
-    const onAction = vi.fn();
 
     render(
       <DataTable
         data={mockData}
         columns={columns}
         keyExtractor={(item) => item.id}
-        actionLabel="Adicionar"
-        onAction={onAction}
+        resource={{
+          name: "item",
+          modal: "item",
+        }}
       />
     );
 
-    await user.click(screen.getByRole("button", { name: "Adicionar" }));
+    await user.click(screen.getByRole("button", { name: "Cadastrar item" }));
 
-    expect(onAction).toHaveBeenCalled();
+    expect(mockOpenModal).toHaveBeenCalledWith("item");
+  });
+
+  it("deve abrir modal com dados ao clicar na linha", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        resource={{
+          name: "item",
+          modal: "item",
+        }}
+      />
+    );
+
+    await user.click(screen.getByText("Item 1"));
+
+    expect(mockOpenModal).toHaveBeenCalledWith("item", mockData[0]);
   });
 
   it("deve renderizar paginação quando pagination é passado", () => {
@@ -138,5 +168,142 @@ describe("DataTable", () => {
     expect(screen.getByText("R$ 100")).toBeInTheDocument();
     expect(screen.getByText("R$ 200")).toBeInTheDocument();
   });
-});
 
+  it("deve renderizar checkboxes quando deleteMany é passado", () => {
+    const deleteMany = vi.fn();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        resource={{
+          name: "item",
+          modal: "item",
+          deleteMany,
+        }}
+      />
+    );
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    expect(checkboxes).toHaveLength(3);
+  });
+
+  it("deve selecionar item ao clicar no checkbox", async () => {
+    const user = userEvent.setup();
+    const deleteMany = vi.fn();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        resource={{
+          name: "item",
+          modal: "item",
+          deleteMany,
+        }}
+      />
+    );
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[1]);
+
+    expect(screen.getByRole("button", { name: /Excluir \(1\)/ })).toBeInTheDocument();
+  });
+
+  it("deve selecionar todos ao clicar no checkbox do header", async () => {
+    const user = userEvent.setup();
+    const deleteMany = vi.fn();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        resource={{
+          name: "item",
+          modal: "item",
+          deleteMany,
+        }}
+      />
+    );
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[0]);
+
+    expect(screen.getByRole("button", { name: /Excluir \(2\)/ })).toBeInTheDocument();
+  });
+
+  it("deve renderizar botão de excluir todos quando deleteAll é passado", () => {
+    const deleteAll = vi.fn();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        pagination={{ total: 2, page: 1, limit: 10, totalPages: 1 }}
+        resource={{
+          name: "item",
+          modal: "item",
+          deleteAll,
+        }}
+      />
+    );
+
+    expect(screen.getByRole("button", { name: "Excluir todos" })).toBeInTheDocument();
+  });
+
+  it("deve abrir modal de confirmação ao clicar em excluir selecionados", async () => {
+    const user = userEvent.setup();
+    const deleteMany = vi.fn();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        resource={{
+          name: "item",
+          modal: "item",
+          deleteMany,
+        }}
+      />
+    );
+
+    const checkboxes = screen.getAllByRole("checkbox");
+    await user.click(checkboxes[1]);
+
+    await user.click(screen.getByRole("button", { name: /Excluir \(1\)/ }));
+
+    expect(mockOpenModal).toHaveBeenCalledWith("confirm", expect.objectContaining({
+      title: "Excluir items selecionados",
+    }));
+  });
+
+  it("deve abrir modal de confirmação ao clicar em excluir todos", async () => {
+    const user = userEvent.setup();
+    const deleteAll = vi.fn();
+
+    render(
+      <DataTable
+        data={mockData}
+        columns={columns}
+        keyExtractor={(item) => item.id}
+        pagination={{ total: 2, page: 1, limit: 10, totalPages: 1 }}
+        resource={{
+          name: "item",
+          modal: "item",
+          deleteAll,
+        }}
+      />
+    );
+
+    await user.click(screen.getByRole("button", { name: "Excluir todos" }));
+
+    expect(mockOpenModal).toHaveBeenCalledWith("confirm", expect.objectContaining({
+      title: "Excluir todos os items",
+    }));
+  });
+});
