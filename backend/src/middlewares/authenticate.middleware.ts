@@ -3,13 +3,12 @@ import { verifyAccessToken } from "@/utils/jwt.util";
 
 export function authenticate(request: Request, response: Response, next: NextFunction) {
   try {
-    const authHeader = request.headers.authorization;
+    const token = request.cookies?.token;
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    if (!token) {
       return response.status(401).json({ message: "Unauthorized" });
     }
 
-    const token = authHeader.substring(7);
     const payload = verifyAccessToken(token);
     const userId = payload.sub as string;
 

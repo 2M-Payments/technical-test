@@ -2,6 +2,7 @@ import "dotenv/config";
 import "reflect-metadata";
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import "@/container";
 import { parseAllowedOrigins } from "@/utils/parse-allowed-origins.util";
 import { authRoutes } from "@/routes/auth.route";
@@ -15,6 +16,7 @@ app.use(cors({
     credentials: true,
 }));
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/api/v1/auth", authRoutes);
