@@ -2,9 +2,9 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthLoader } from "@/components/shared/auth-loader";
 import { RouteGuard } from "@/components/shared/route-guard";
-import { Login } from "@/pages/login";
-import { Register } from "@/pages/register";
-import { Dashboard } from "@/pages/dashboard";
+import { Login } from "@/pages/public/login";
+import { Register } from "@/pages/public/register";
+import { Dashboard } from "@/pages/private/dashboard";
 
 function App() {
   return (
