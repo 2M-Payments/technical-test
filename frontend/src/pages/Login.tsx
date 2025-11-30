@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { loginSchema, type LoginFormData } from "@/schemas/auth.schema";
+import { useLoginMutation } from "@/features/auth/auth-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +23,9 @@ import {
 } from "@/components/ui/form";
 
 export function Login() {
+  const navigate = useNavigate();
+  const [login, { isLoading }] = useLoginMutation();
+
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -29,8 +34,14 @@ export function Login() {
     },
   });
 
-  function onSubmit(data: LoginFormData) {
-    console.log(data);
+  async function onSubmit(data: LoginFormData) {
+    try {
+      await login(data).unwrap();
+      toast.success("Login realizado com sucesso!");
+      navigate("/dashboard");
+    } catch {
+      toast.error("E-mail ou senha inválidos");
+    }
   }
 
   return (
@@ -87,8 +98,8 @@ export function Login() {
           </CardContent>
 
           <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full">
-              Entrar
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Entrando..." : "Entrar"}
             </Button>
             <p className="text-sm text-muted-foreground">
               Não tem uma conta?{" "}

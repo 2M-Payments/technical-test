@@ -1,7 +1,9 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 import { registerSchema, type RegisterFormData } from "@/schemas/auth.schema";
+import { useRegisterMutation } from "@/features/auth/auth-api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -21,6 +23,9 @@ import {
 } from "@/components/ui/form";
 
 export function Register() {
+  const navigate = useNavigate();
+  const [register, { isLoading }] = useRegisterMutation();
+
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -31,8 +36,14 @@ export function Register() {
     },
   });
 
-  function onSubmit(data: RegisterFormData) {
-    console.log(data);
+  async function onSubmit(data: RegisterFormData) {
+    try {
+      await register(data).unwrap();
+      toast.success("Conta criada com sucesso!");
+      navigate("/dashboard");
+    } catch {
+      toast.error("Erro ao criar conta. Tente novamente.");
+    }
   }
 
   return (
@@ -127,8 +138,8 @@ export function Register() {
           </CardContent>
 
           <CardFooter className="flex flex-col gap-4">
-            <Button type="submit" className="w-full">
-              Cadastrar
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Cadastrando..." : "Cadastrar"}
             </Button>
             <p className="text-sm text-muted-foreground">
               Já tem uma conta?{" "}

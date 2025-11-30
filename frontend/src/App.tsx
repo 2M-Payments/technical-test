@@ -1,14 +1,21 @@
 import { Routes, Route, Navigate } from "react-router-dom";
-import { Login } from "@/pages/Login";
-import { Register } from "@/pages/Register";
+import { Toaster } from "@/components/ui/sonner";
+import { AuthLoader } from "@/components/shared/auth-loader";
+import { Login } from "@/pages/login";
+import { Register } from "@/pages/register";
+import { Dashboard } from "@/pages/dashboard";
 
 function App() {
   return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
-    </Routes>
+    <AuthLoader>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="*" element={<Navigate to="/login" replace />} />
+      </Routes>
+      <Toaster position="top-right" richColors />
+    </AuthLoader>
   );
 }
 
