@@ -89,6 +89,6 @@ Serão analisados os seguintes pontos:
 2. Crie uma branch seguindo o modelo (`project/nome-candidato-nome-do-crud`).
 3. Todas as alterações devem ser feitas por outros commits e PRs a fim de conseguirmos visualizar como é feito a atualização e familiaridade do candidato em conseguir trabalhar seguindo um Git Flow.
 4. Commit suas alterações seguindo o padrão.
-5. Prazo será combinado com o avaliador a depender do nível experiência do candidato.
+5. Prazo será de acordo do nível experiência da vaga, Estagiário/Trainee [7 Dias], Júnior [5 Dias], Pleno [3 Dias], Sênior [2 Dias].
 ---
 
