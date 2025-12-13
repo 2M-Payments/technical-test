@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/server.ts",
-"scripts": {
+  "scripts": {
+    "typeorm": "typeorm-ts-node-commonjs -d src/config/datasource.ts",
     "dev": "pnpm exec tsx watch src/server.ts",
     "build": "pnpm exec tsc",
     "start": "node dist/server.js",
@@ -22,6 +23,7 @@
     "@types/node": "^25.0.1",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.6",
+    "ts-node": "^10.9.2",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
   },
@@ -34,6 +36,7 @@
     "express-session": "^1.18.2",
     "mysql2": "^3.15.3",
     "redis": "^5.10.0",
+    "reflect-metadata": "^0.2.2",
     "typeorm": "^0.3.28",
     "zod": "^4.1.13"
   }
