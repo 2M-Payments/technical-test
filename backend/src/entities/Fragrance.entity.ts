@@ -7,13 +7,13 @@ export class Fragrance {
   id!: string;
 
   @Column({ type: 'varchar', length: 100, unique: true })
-  name: string;
+  name?: string;
 
   @Column({ type: 'text', nullable: true })
-  description: string;
+  description?: string | null;
 
   @Column({ type: 'boolean', default: true })
-  active: boolean;
+  active?: boolean;
 
   @CreateDateColumn()
   createdAt!: Date;
