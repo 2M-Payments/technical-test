@@ -1,14 +1,18 @@
 import { Router } from 'express';
 import { OrderRepository } from '../repositories/order.repository';
-import { PricingService } from '../services/pricing.service';
 import { OrderService } from '../services/order.service';
 import { OrderController } from '../controllers/order.controller';
 import { authMiddleware } from '../middleware/auth.middleware';
+import { PricingConfigRepository } from '../repositories/pricingConfig.repository';
+import { OrderItemRepository } from '../repositories/orderItem.repository';
+import { FragranceRepository } from '../repositories/fragrance.repository';
 const router = Router();
 
 const orderRepository = new OrderRepository();
-const pricingService = new PricingService();
-const orderService = new OrderService(orderRepository, pricingService);
+const orderItemRepository = new OrderItemRepository();
+const fragranceRepository = new FragranceRepository();
+const pricingConfigRepository = new PricingConfigRepository();
+const orderService = new OrderService(orderRepository, orderItemRepository, fragranceRepository, pricingConfigRepository);
 const orderController = new OrderController(orderService);
 
 router.use(authMiddleware);

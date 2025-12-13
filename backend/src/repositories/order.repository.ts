@@ -17,7 +17,7 @@ export class OrderRepository {
   async findById(id: string): Promise<Order | null> {
     return await this.repository.findOne({
       where: { id },
-      relations: ['user']
+      relations: ['user', 'items', 'items.fragrance']
     });
   }
 
@@ -37,7 +37,7 @@ export class OrderRepository {
       skip,
       take,
       order: { createdAt: 'DESC' },
-      relations: ['user']
+      relations: ['user', 'items', 'items.fragrance']
     });
   }
 

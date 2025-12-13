@@ -1,69 +1,144 @@
-import { Order, OrderStatus, FragranceSelection } from '../entities/Order.entity';
+import { Order, OrderStatus } from '../entities/Order.entity';
 import { OrderRepository } from '../repositories/order.repository';
+import { OrderItemRepository } from '../repositories/orderItem.repository';
+import { FragranceRepository } from '../repositories/fragrance.repository';
+import { PricingConfigRepository } from '../repositories/pricingConfig.repository';
 import { CreateOrderSchema, UpdateOrderSchema } from '../validation/order.validation';
-import { PricingService } from './pricing.service';
+
+interface FragranceSelection {
+  fragranceId: string;
+  quantity: number;
+}
+
+interface PriceCalculation {
+  unitPrice: number;
+  subtotal: number;
+  discountPercentage: number;
+  discountAmount: number;
+  total: number;
+}
 
 export class OrderService {
   constructor(
     private orderRepository: OrderRepository,
-    private pricingService: PricingService
+    private orderItemRepository: OrderItemRepository,
+    private fragranceRepository: FragranceRepository,
+    private pricingConfigRepository: PricingConfigRepository
   ) { }
 
   async createOrder(userId: string, data: unknown): Promise<Order> {
     const validated = CreateOrderSchema.parse(data);
 
-    const quantity = validated.items.reduce((sum, item) => sum + item.quantity, 0);
-    const fragrances = validated.items.map(item => ({
-      fragranceId: item.fragranceId,
-      quantity: item.quantity
-    }));
+    // Calcular quantidade total
+    const totalQuantity = validated.items.reduce((sum, item) => sum + item.quantity, 0);
 
-    this.validateFragranceRules(quantity, fragrances);
+    // Validar regras de fragrâncias
+    await this.validateFragranceRules(totalQuantity, validated.items);
 
-    const pricing = this.pricingService.calculatePrice(quantity);
+    // Calcular preços
+    const pricing = await this.calculatePricing(totalQuantity);
 
+    // Criar o pedido
     const order = await this.orderRepository.create({
       userId,
-      items: fragrances,
+      totalQuantity,
+      subtotal: pricing.subtotal,
+      discount: pricing.discountAmount,
+      total: pricing.total,
+      status: OrderStatus.PENDING,
       logoUrl: validated.logoUrl,
       customDescription: validated.customDescription,
-      notes: validated.notes,
-      unitPrice: pricing.unitPrice,
-      subtotal: pricing.subtotal,
-      discountPercentage: pricing.discountPercentage,
-      discountAmount: pricing.discountAmount,
-      total: pricing.total,
-      status: OrderStatus.PENDING
+      notes: validated.notes
     });
 
-    return order;
+    // Criar os items do pedido
+    for (const item of validated.items) {
+      const fragrance = await this.fragranceRepository.findById(item.fragranceId);
+      if (!fragrance) {
+        throw new Error(`Fragrância não encontrada: ${item.fragranceId}`);
+      }
+
+      if (!fragrance.active) {
+        throw new Error(`Fragrância inativa: ${fragrance.name}`);
+      }
+
+      const itemSubtotal = item.quantity * pricing.unitPrice;
+
+      await this.orderItemRepository.create({
+        orderId: order.id,
+        fragranceId: item.fragranceId,
+        quantity: item.quantity,
+        unitPrice: pricing.unitPrice,
+        subtotal: itemSubtotal
+      });
+    }
+
+    // Retornar pedido completo com items
+    const fullOrder = await this.orderRepository.findById(order.id);
+    if (!fullOrder) {
+      throw new Error('Erro ao recuperar pedido criado');
+    }
+
+    return fullOrder;
   }
 
-  private validateFragranceRules(quantity: number, fragrances: FragranceSelection[]) {
+  private async validateFragranceRules(
+    totalQuantity: number,
+    items: FragranceSelection[]
+  ): Promise<void> {
     // Validar: quantidade total das fragrâncias = quantidade do pedido
-    const totalFragranceQty = fragrances.reduce((sum, f) => sum + f.quantity, 0);
-    if (totalFragranceQty !== quantity) {
+    const totalFragranceQty = items.reduce((sum, f) => sum + f.quantity, 0);
+    if (totalFragranceQty !== totalQuantity) {
       throw new Error(
-        `Soma das quantidades de fragrâncias (${totalFragranceQty}) deve ser igual à quantidade total (${quantity})`
+        `Soma das quantidades de fragrâncias (${totalFragranceQty}) deve ser igual à quantidade total (${totalQuantity})`
       );
     }
 
     // Validar: número de fragrâncias únicas <= quantidade / 100
-    const maxFragrances = Math.floor(quantity / 100);
-    const uniqueFragrances = new Set(fragrances.map(f => f.name)).size;
+    const maxFragrances = Math.floor(totalQuantity / 100);
+    const uniqueFragrances = new Set(items.map(f => f.fragranceId)).size;
 
     if (uniqueFragrances > maxFragrances) {
       throw new Error(
-        `Máximo de ${maxFragrances} fragrância(s) diferentes para ${quantity} unidades. Você selecionou ${uniqueFragrances}`
+        `Máximo de ${maxFragrances} fragrância(s) diferentes para ${totalQuantity} unidades. Você selecionou ${uniqueFragrances}`
       );
     }
 
     // Validar: cada fragrância deve ser múltiplo de 100
-    for (const fragrance of fragrances) {
-      if (fragrance.quantity % 100 !== 0) {
-        throw new Error(`Quantidade de ${fragrance.name} deve ser múltiplo de 100`);
+    for (const item of items) {
+      if (item.quantity % 100 !== 0) {
+        const fragrance = await this.fragranceRepository.findById(item.fragranceId);
+        const name = fragrance?.name || item.fragranceId;
+        throw new Error(`Quantidade de ${name} deve ser múltiplo de 100`);
       }
     }
+
+    // Validar quantidade mínima
+    if (totalQuantity < 100) {
+      throw new Error('Quantidade mínima é 100 unidades');
+    }
+  }
+
+  private async calculatePricing(quantity: number): Promise<PriceCalculation> {
+    const pricingConfig = await this.pricingConfigRepository.findByQuantity(quantity);
+
+    if (!pricingConfig) {
+      throw new Error('Configuração de preço não encontrada para esta quantidade');
+    }
+
+    const unitPrice = Number(pricingConfig.unitPrice);
+    const subtotal = quantity * unitPrice;
+    const discountPercentage = Number(pricingConfig.discountPercentage);
+    const discountAmount = subtotal * (discountPercentage / 100);
+    const total = subtotal - discountAmount;
+
+    return {
+      unitPrice,
+      subtotal,
+      discountPercentage,
+      discountAmount,
+      total
+    };
   }
 
   async getOrderById(id: string, userId?: string): Promise<Order> {
@@ -161,15 +236,17 @@ export class OrderService {
 
     return orders;
   }
-  async calculatePrice(data: unknown) {
+
+  async calculatePrice(data: unknown): Promise<PriceCalculation> {
     const validated = CreateOrderSchema.parse(data);
-    const quantity = validated.items.reduce((sum, item) => sum + item.quantity, 0);
-    const fragrances = validated.items.map(item => ({
-      fragranceId: item.fragranceId,
-      quantity: item.quantity
-    }));
-    this.validateFragranceRules(quantity, fragrances);
-    return this.pricingService.calculatePrice(quantity);
+    const totalQuantity = validated.items.reduce((sum, item) => sum + item.quantity, 0);
+
+    await this.validateFragranceRules(totalQuantity, validated.items);
+
+    return await this.calculatePricing(totalQuantity);
   }
-  
+
+  async getOrderStats(userId?: string) {
+    return await this.orderRepository.getStats(userId);
+  }
 }

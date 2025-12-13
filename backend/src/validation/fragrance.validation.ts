@@ -2,24 +2,30 @@ import { z } from 'zod';
 
 export const CreateFragranceSchema = z.object({
   name: z.string()
-    .min(2, 'Nome deve ter pelo menos 2 caracteres')
-    .max(100, 'Nome não pode ter mais de 100 caracteres'),
+    .min(1, 'Nome é obrigatório')
+    .max(100, 'Nome deve ter no máximo 100 caracteres')
+    .trim(),
   description: z.string()
-    .max(500, 'Descrição não pode ter mais de 500 caracteres')
-    .optional(),
-  active: z.boolean().default(true)
+    .max(500, 'Descrição deve ter no máximo 500 caracteres')
+    .optional()
+    .nullable(),
+  active: z.boolean()
+    .default(true)
 });
 
 export const UpdateFragranceSchema = z.object({
   name: z.string()
-    .min(2, 'Nome deve ter pelo menos 2 caracteres')
-    .max(100, 'Nome não pode ter mais de 100 caracteres')
+    .min(1, 'Nome é obrigatório')
+    .max(100, 'Nome deve ter no máximo 100 caracteres')
+    .trim()
     .optional(),
   description: z.string()
-    .max(500, 'Descrição não pode ter mais de 500 caracteres')
-    .optional(),
-  active: z.boolean().optional()
+    .max(500, 'Descrição deve ter no máximo 500 caracteres')
+    .optional()
+    .nullable(),
+  active: z.boolean()
+    .optional()
 });
 
-export type CreateFragranceInput = z.infer<typeof CreateFragranceSchema>;
-export type UpdateFragranceInput = z.infer<typeof UpdateFragranceSchema>;
+export type CreateFragranceDTO = z.infer<typeof CreateFragranceSchema>;
+export type UpdateFragranceDTO = z.infer<typeof UpdateFragranceSchema>;
