@@ -1,4 +1,5 @@
 import http from "http";
+import "reflect-metadata";
 import app from "./app";
 import { AppDataSource } from "./config/datasource";
 
@@ -53,7 +54,3 @@ const shutdown = async (signal: string) => {
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
-setTimeout(() => {
-  console.error("⏱️ Timeout forçado. Encerrando processo.");
-  process.exit(1);
-}, 10_000).unref();
