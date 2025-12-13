@@ -15,7 +15,7 @@ export class Order {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   userId!: string;
 
   @ManyToOne(() => User, user => user.orders)
@@ -45,7 +45,7 @@ export class Order {
   status!: OrderStatus;
 
   // Personalização
-  @Column({ nullable: true })
+  @Column({ type: 'text', nullable: true })
   logoUrl!: string; // URL da logo enviada
 
   @Column({ type: 'text', nullable: true })

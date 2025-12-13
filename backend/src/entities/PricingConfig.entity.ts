@@ -17,7 +17,7 @@ export class PricingConfig {
   @Column({ type: 'decimal', precision: 5, scale: 2, default: 0 })
   discountPercentage!: number;
 
-  @Column({ default: true })
+  @Column({ type: 'boolean', default: true })
   active!: boolean;
 
   @CreateDateColumn()

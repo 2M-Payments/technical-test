@@ -7,14 +7,14 @@ export class OrderItem {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   orderId!: string;
 
   @ManyToOne(() => Order, order => order.items)
   @JoinColumn({ name: 'orderId' })
   order!: Order;
 
-  @Column()
+  @Column({ type: 'uuid' })
   fragranceId!: string;
 
   @ManyToOne(() => Fragrance)
