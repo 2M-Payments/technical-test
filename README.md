@@ -1,94 +1,185 @@
-# Projeto CRUD Full Stack
+# 🧴🚗 API de Brindes – Aromatizantes Automotivos (Atacado)
 
-Este repositório serve para fins do teste técnico CRUD full stack utilizando **Node.js com TypeScript e TypeORM** para o back-end e **React com TypeScript** para o front-end. O foco da avaliação será a **qualidade do código**, os **padrões de commit** e a **organização do projeto**, e não apenas a funcionalidade em si.
+Este projeto é uma **API RESTful** desenvolvida como teste técnico, simulando o backend de uma **empresa que vende aromatizantes automotivos personalizados em atacado**, utilizados como brindes corporativos.
 
-## Tecnologias Utilizadas
+A API cobre **autenticação**, **gestão completa de usuários** e **gestão completa de pedidos**, incluindo cálculos de preço e estatísticas.
 
-### Back-end
-- Node.js com TypeScript
-- TypeORM para interação com MySQL
-- Injeção de dependência
-- Arquitetura modular
-- Testes unitários
-- Validação a entrada dos dados, **preferência ZOD**
-- Utilizar framework para autenticação da sessão com **tempo limite de 30 minutos**
-
-### Front-end
-- React com TypeScript
-- Componentização
-- Gerenciamento de estado (Context API, Redux ou outro a critério do candidato)
-- Testes unitários
-
-## Exemplo ideal de estrutura do projeto
-- OBS: É apenas uma sugestão de estrutura, mas o candidato pode escolher uma própria, contato que saiba explicar bem como funciona o padrão alternativo
-
-### Back-end
-```
-backend/
-│-- src/
-│   ├── controllers/
-│   ├── services/
-│   ├── repositories/
-│   ├── entities/
-│   ├── middlewares/
-│   ├── routes/
-│   ├── config/
-│   ├── tests/
-│   ├── app.ts
-│   ├── server.ts
-│-- .env
-│-- ormconfig.json
-│-- package.json
-```
-
-### Front-end
-```
-frontend/
-│-- src/
-│   ├── components/
-│   ├── pages/
-│   ├── services/
-│   ├── hooks/
-│   ├── contexts/
-│   ├── tests/
-│   ├── App.tsx
-│-- package.json
-```
-
-## Padrões de Commit
-Este projeto segue o padrão **Conventional Commits**. Exemplos:
-```
-feat: adiciona endpoint de criação de usuário
-fix: corrige bug na autenticação
-refactor: melhora a estrutura dos repositórios
-test: adiciona teste da service de exclusao de um item por id
-```
-
-## Avaliação
-Serão analisados os seguintes pontos:
-- **Organização do código** (separação em camadas, padrões de projeto)
-- **Clareza e legibilidade**
-- **Boas práticas de TypeScript**
-- **Estrutura dos commits e mensagens**
-- **Uso adequado de injeção de dependência**
-- **Testes unitários**
-- **Avaliação de prioridade na entrega do CRUD**
-
-## Funcionalidade necessárias do CRUD
-1. Criar um item por vez
-2. Criar vários itens em lote
-3. Listagem de todos os itens do CRUD utilizando paginação
-4. Listagem de um único item buscado por ID
-5. Alteração dos dados de um item específico
-6. Deletar um item por vez
-7. Deletar vários itens por vez
-8. Deletar todos os itens de uma vez
-
-## Observações
-1. O candidato deverá criar um fork do repositório. Ao concluir a avaliação, abrir um pull request.
-2. Crie uma branch seguindo o modelo (`project/nome-candidato-nome-do-crud`).
-3. Todas as alterações devem ser feitas por outros commits e PRs a fim de conseguirmos visualizar como é feito a atualização e familiaridade do candidato em conseguir trabalhar seguindo um Git Flow.
-4. Commit suas alterações seguindo o padrão.
-5. Prazo será de acordo do nível experiência da vaga, Estagiário/Trainee [7 Dias], Júnior [5 Dias], Pleno [3 Dias], Sênior [2 Dias].
 ---
 
+## 🧠 Contexto do Negócio
+
+A empresa trabalha com:
+
+* Venda **em atacado**
+* Pedidos com **quantidade mínima**
+* Cálculo de preço baseado em volume
+* Clientes corporativos
+
+O sistema foi modelado para refletir um cenário real de backoffice:
+
+* Usuários (administradores, operadores)
+* Pedidos de brindes
+* Operações em lote (batch)
+
+---
+
+## 🛠️ Tecnologias Utilizadas
+
+* **Node.js**
+* **TypeScript**
+* **Express**
+* **TypeORM**
+* **MySQL**
+* **JWT / Session-based Auth**
+* **Migrations com TypeORM**
+
+---
+
+## 🚀 Como Executar o Projeto
+
+### 1️⃣ Instalar dependências
+
+```bash
+pnpm install
+```
+
+### 2️⃣ Configurar variáveis de ambiente
+
+Crie um arquivo `.env` baseado no exemplo:
+
+```env
+DB_HOST=localhost
+DB_PORT=3306
+BLUEPRINT_DB_USERNAME=root
+BLUEPRINT_DB_PASSWORD=password
+BLUEPRINT_DB_DATABASE=blueprint
+NODE_ENV=development
+```
+
+### 3️⃣ Rodar migrations
+
+```bash
+pnpm migration:run
+```
+
+### 4️⃣ Iniciar servidor
+
+```bash
+pnpm dev
+```
+
+A API estará disponível em:
+
+```
+http://localhost:3001
+```
+
+---
+
+## 📍 Endpoints Disponíveis
+
+### 🔐 Auth
+
+| Método | Endpoint            | Descrição              |
+| ------ | ------------------- | ---------------------- |
+| POST   | `/api/auth/login`   | Login do usuário       |
+| POST   | `/api/auth/logout`  | Logout                 |
+| GET    | `/api/auth/session` | Verificar sessão ativa |
+
+---
+
+### 👤 Users (CRUD Completo + Batch)
+
+| # | Método | Endpoint                | Descrição                  |
+| - | ------ | ----------------------- | -------------------------- |
+| 1 | POST   | `/api/users`            | Criar usuário              |
+| 2 | POST   | `/api/users/batch`      | Criar múltiplos usuários   |
+| 3 | GET    | `/api/users`            | Listar usuários (paginado) |
+| 4 | GET    | `/api/users/:id`        | Buscar usuário por ID      |
+| 5 | PUT    | `/api/users/:id`        | Atualizar usuário          |
+| 6 | DELETE | `/api/users/:id`        | Deletar usuário            |
+| 7 | DELETE | `/api/users/batch/many` | Deletar múltiplos usuários |
+| 8 | DELETE | `/api/users/batch/all`  | Deletar todos os usuários  |
+
+---
+
+### 📦 Orders (Pedidos de Brindes)
+
+| #  | Método | Endpoint                 | Descrição                           |
+| -- | ------ | ------------------------ | ----------------------------------- |
+| 1  | POST   | `/api/orders`            | Criar pedido                        |
+| 2  | POST   | `/api/orders/batch`      | Criar múltiplos pedidos             |
+| 3  | GET    | `/api/orders`            | Listar pedidos (paginado + filtros) |
+| 4  | GET    | `/api/orders/:id`        | Buscar pedido por ID                |
+| 5  | PUT    | `/api/orders/:id`        | Atualizar pedido                    |
+| 6  | DELETE | `/api/orders/:id`        | Deletar pedido                      |
+| 7  | DELETE | `/api/orders/batch/many` | Deletar múltiplos pedidos           |
+| 8  | DELETE | `/api/orders/batch/all`  | Deletar todos os pedidos            |
+| 🎁 | POST   | `/api/orders/calculate`  | Calcular preço do pedido            |
+| 🎁 | GET    | `/api/orders/stats`      | Estatísticas de pedidos             |
+
+---
+
+## 🎁 Funcionalidades Extras
+
+### 🔢 Cálculo de Preço
+
+O endpoint `/api/orders/calculate` simula a lógica de precificação baseada em:
+
+* Quantidade
+* Valor unitário
+* Possíveis descontos por volume
+
+### 📊 Estatísticas
+
+O endpoint `/api/orders/stats` retorna métricas como:
+
+* Total de pedidos
+* Quantidade total de itens
+* Valor total faturado
+
+---
+
+## 🧱 Estrutura do Projeto
+
+```txt
+src/
+ ├── config/
+ ├── controllers/
+ ├── middleware/
+ ├── entities/
+ ├── migrations/
+ ├── repositories/
+ ├── routes/
+ ├── services/
+ ├── tests/
+ ├── app.ts
+ └── server.ts
+```
+
+---
+
+## ✅ Observações Técnicas
+
+* Projeto segue separação por **camadas (Controller / Service / Repository)**
+* Uso de **migrations** para versionamento do banco
+* Endpoints batch simulam operações comuns em sistemas corporativos
+* Estrutura pensada para fácil escalabilidade
+
+---
+
+## 📌 Considerações Finais
+
+O foco do projeto é demonstrar:
+
+* Organização de código
+* Domínio de CRUD completo
+* Uso correto de TypeORM
+* Boa modelagem de API
+* Clareza de regras de negócio
+
+Este projeto representa um cenário realista de backend para uma empresa de brindes personalizados em atacado.
+
+---
+
+👨‍💻 Desenvolvido como teste técnico
