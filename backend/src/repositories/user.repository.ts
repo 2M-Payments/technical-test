@@ -46,8 +46,4 @@ export class UserRepository {
     return result.affected ?? 0;
   }
 
-  async deleteAll(): Promise<number> {
-    const result = await this.repository.clear();
-    return result.affected ?? 0;
-  }
 }
