@@ -9,7 +9,8 @@ export const AppDataSource = new DataSource({
   password: process.env.BLUEPRINT_DB_PASSWORD || "password1234",
   database: process.env.BLUEPRINT_DB_DATABASE || "blueprint",
 
-  entities: ["src/entities/**/*.ts"],
+ entities: [__dirname + '/../entities/*.{ts,js}'],
+
   migrations: ["src/migrations/**/*.ts"],
   migrationsRun: false,
   migrationsTableName: 'migrations',
