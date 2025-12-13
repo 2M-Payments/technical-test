@@ -13,9 +13,9 @@ const authController = new AuthController(authService);
 
 // Rotas públicas
 router.post('/login', authController.login);
-router.post('/logout', authController.logout);
 
 // Rota protegida
-router.get('/session', authMiddleware, authController.checkSession);
+router.get('/me', authMiddleware, authController.me);
+router.post('/verify-token', authController.verifyToken);
 
 export default router;

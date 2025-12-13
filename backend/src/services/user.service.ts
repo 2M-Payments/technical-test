@@ -77,10 +77,6 @@ export class UserService {
     return await this.userRepository.deleteMany(ids);
   }
 
-  async deleteAll(): Promise<number> {
-    return await this.userRepository.deleteAll();
-  }
-
   async createMany(dataArray: unknown[]): Promise<User[]> {
     const users: User[] = [];
 
