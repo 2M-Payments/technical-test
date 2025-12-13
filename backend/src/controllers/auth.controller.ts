@@ -6,15 +6,11 @@ export class AuthController {
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {
-      const user = await this.authService.login(req.body);
-
-      // Armazena dados na sessão
-      req.session.userId = user.id;
-      req.session.email = user.email;
+      const result = await this.authService.login(req.body);
 
       res.json({
         message: 'Login realizado com sucesso',
-        user
+        ...result
       });
     } catch (error) {
       res.status(401).json({
@@ -23,25 +19,45 @@ export class AuthController {
     }
   };
 
-  logout = (req: Request, res: Response): void => {
-    req.session.destroy((err) => {
-      if (err) {
-        res.status(500).json({ error: 'Falha ao fazer logout' });
+  verifyToken = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const authHeader = req.headers.authorization;
+
+      if (!authHeader) {
+        res.status(401).json({ error: 'Token não fornecido' });
         return;
       }
-      res.json({ message: 'Logout realizado com sucesso' });
-    });
+
+      const token = authHeader.split(' ')[1];
+      const user = await this.authService.verifyToken(token);
+
+      res.json({
+        valid: true,
+        user
+      });
+    } catch (error) {
+      res.status(401).json({
+        valid: false,
+        error: error instanceof Error ? error.message : 'Token inválido'
+      });
+    }
   };
 
-  checkSession = (req: Request, res: Response): void => {
-    if (req.session.userId) {
+  me = async (req: Request, res: Response): Promise<void> => {
+    try {
+      // req.user é preenchido pelo authMiddleware
+      if (!req.user) {
+        res.status(401).json({ error: 'Não autenticado' });
+        return;
+      }
+
       res.json({
-        authenticated: true,
-        userId: req.session.userId,
-        email: req.session.email
+        user: req.user
       });
-    } else {
-      res.status(401).json({ authenticated: false });
+    } catch (error) {
+      res.status(500).json({
+        error: error instanceof Error ? error.message : 'Erro desconhecido'
+      });
     }
   };
 }
