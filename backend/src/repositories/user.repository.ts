@@ -1,7 +1,6 @@
 import { Repository } from 'typeorm';
 import { User } from '../entities/User.entity';
 import { AppDataSource } from '../config/datasource';
-import e from 'express';
 
 export interface IUserRepository {
   create(data: Partial<User>): Promise<User>;
