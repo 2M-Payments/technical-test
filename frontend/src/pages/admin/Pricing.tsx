@@ -180,7 +180,7 @@ export function Pricing() {
                       {config.minQuantity} - {config.maxQuantity} unidades
                     </TableCell>
                     <TableCell>
-                      R$ {config.unitPrice.toFixed(2).replace('.', ',')}
+                      R$ {config.unitPrice}
                     </TableCell>
                     <TableCell>
                       <Switch

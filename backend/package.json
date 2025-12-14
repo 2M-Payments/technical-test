@@ -8,7 +8,10 @@
     "dev": "pnpm exec tsx watch src/server.ts",
     "build": "pnpm exec tsc",
     "start": "node dist/server.js",
-"test": "jest --runInBand"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "test:verbose": "jest --verbose"
   },
   "keywords": [],
   "author": "",
