@@ -66,7 +66,7 @@ describe('AuthService', () => {
       userRepository.findByEmail.mockResolvedValue(null);
 
       await expect(
-        authService.login({ email: 'test@test.com', password: 'pass' })
+        authService.login({ email: 'test@test.com', password: 'password123' })
       ).rejects.toThrow('Credenciais inválidas');
     });
 
