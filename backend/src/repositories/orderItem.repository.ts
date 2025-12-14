@@ -2,7 +2,18 @@ import { Repository } from 'typeorm';
 import { OrderItem } from '../entities/OrderItem.entity';
 import { AppDataSource } from '../config/datasource';
 
-export class OrderItemRepository {
+export interface IOrderItemRepository {
+  create(data: Partial<OrderItem>): Promise<OrderItem>;
+  findById(id: string): Promise<OrderItem | null>;
+  findByOrderId(orderId: string): Promise<OrderItem[]>;
+  update(id: string, data: Partial<OrderItem>): Promise<OrderItem | null>;
+  delete(id: string): Promise<boolean>;
+  deleteByOrderId(orderId: string): Promise<number>;
+  getTotalQuantityByOrder(orderId: string): Promise<number>;
+  getTotalByOrder(orderId: string): Promise<number>;
+} 
+
+export class OrderItemRepository implements IOrderItemRepository {
   private repository: Repository<OrderItem>;
 
   constructor() {

@@ -1,4 +1,4 @@
-import { UserRepository } from '../repositories/user.repository';
+import { IUserRepository, UserRepository } from '../repositories/user.repository';
 import bcrypt from 'bcrypt';
 import { LoginSchema } from '../validation/auth.validation';
 import { JwtUtil } from '../utils/jwt.util';
@@ -13,8 +13,13 @@ interface LoginResponse {
   expiresIn: string;
 }
 
-export class AuthService {
-  constructor(private userRepository: UserRepository) { }
+export interface IAuthService {
+  login(data: unknown): Promise<LoginResponse>;
+  verifyToken(token: string): Promise<{ userId: string; email: string; name: string }>;
+}
+
+export class AuthService implements IAuthService {
+  constructor(private readonly userRepository: IUserRepository) { }
 
   async login(data: unknown): Promise<LoginResponse> {
     const validated = LoginSchema.parse(data);

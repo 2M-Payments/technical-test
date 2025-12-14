@@ -1,8 +1,8 @@
 import { PricingConfig } from '../entities/PricingConfig.entity';
-import { PricingConfigRepository } from '../repositories/pricingConfig.repository';
+import { IPricingConfigRepository, PricingConfigRepository } from '../repositories/pricingConfig.repository';
 import { CreatePricingConfigSchema, UpdatePricingConfigSchema } from '../validation/pricingConfig.validation';
 
-interface PriceCalculation {
+type PriceCalculation = {
   unitPrice: number;
   subtotal: number;
   discountPercentage: number;
@@ -15,8 +15,30 @@ interface PriceCalculation {
   };
 }
 
-export class PricingConfigService {
-  constructor(private pricingConfigRepository: PricingConfigRepository) { }
+export interface IPricingConfigService {
+  createPricingConfig(data: unknown): Promise<PricingConfig>;
+  getPricingConfigById(id: string): Promise<PricingConfig>;
+  getAllPricingConfigs(
+    page?: number,
+    limit?: number,
+    activeOnly?: boolean
+  ): Promise<{
+    data: PricingConfig[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }>;
+  getActivePricingConfigs(): Promise<PricingConfig[]>;
+  updatePricingConfig(id: string, data: unknown): Promise<PricingConfig>;
+  toggleActive(id: string): Promise<PricingConfig>;
+  deletePricingConfig(id: string): Promise<void>;
+  deleteMany(ids: string[]): Promise<number>;
+  calculatePrice(quantity: number): Promise<PriceCalculation>;
+  getPricingTable(): Promise<PricingConfig[]>;
+}
+
+export class PricingConfigService implements IPricingConfigService {
+  constructor(private readonly pricingConfigRepository: IPricingConfigRepository) { }
 
   async createPricingConfig(data: unknown): Promise<PricingConfig> {
     const validated = CreatePricingConfigSchema.parse(data);

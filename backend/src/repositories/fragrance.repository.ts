@@ -2,7 +2,19 @@ import { Repository } from 'typeorm';
 import { Fragrance } from '../entities/Fragrance.entity';
 import { AppDataSource } from '../config/datasource';
 
-export class FragranceRepository {
+export interface IFragranceRepository {
+  create(data: Partial<Fragrance>): Promise<Fragrance>;
+  findById(id: string): Promise<Fragrance | null>;
+  findByName(name: string): Promise<Fragrance | null>;
+  findAll(skip: number, take: number, activeOnly?: boolean): Promise<[Fragrance[], number]>;
+  findActive(): Promise<Fragrance[]>;
+  update(id: string, data: Partial<Fragrance>): Promise<Fragrance | null>;
+  delete(id: string): Promise<boolean>;
+  deleteMany(ids: string[]): Promise<number>;
+  toggleActive(id: string): Promise<Fragrance | null>;
+}
+
+export class FragranceRepository implements IFragranceRepository {
   private repository: Repository<Fragrance>;
 
   constructor() {

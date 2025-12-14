@@ -1,8 +1,18 @@
 import { Request, Response } from 'express';
-import { UserService } from '../services/user.service';
+import { IUserService, UserService } from '../services/user.service';
 
-export class UserController {
-  constructor(private userService: UserService) { }
+export interface IUserController {
+  create(req: Request, res: Response): Promise<void>;
+  createMany(req: Request, res: Response): Promise<void>;
+  getAll(req: Request, res: Response): Promise<void>;
+  getById(req: Request, res: Response): Promise<void>;
+  update(req: Request, res: Response): Promise<void>;
+  delete(req: Request, res: Response): Promise<void>;
+  deleteMany(req: Request, res: Response): Promise<void>;
+}
+
+export class UserController implements IUserController {
+  constructor(private readonly userService: IUserService) { }
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {

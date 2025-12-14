@@ -1,8 +1,14 @@
 import { Request, Response } from 'express';
-import { AuthService } from '../services/auth.service';
+import { AuthService, IAuthService } from '../services/auth.service';
 
-export class AuthController {
-  constructor(private authService: AuthService) { }
+export interface IAuthController {
+  login(req: Request, res: Response): Promise<void>;
+  verifyToken(req: Request, res: Response): Promise<void>;
+  me(req: Request, res: Response): Promise<void>;
+}
+
+export class AuthController implements IAuthController {
+  constructor(private readonly authService: IAuthService) { }
 
   login = async (req: Request, res: Response): Promise<void> => {
     try {

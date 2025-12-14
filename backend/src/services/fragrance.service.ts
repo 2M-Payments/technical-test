@@ -1,9 +1,30 @@
 import { Fragrance } from '../entities/Fragrance.entity';
-import { FragranceRepository } from '../repositories/fragrance.repository';
+import { FragranceRepository, IFragranceRepository } from '../repositories/fragrance.repository';
 import { CreateFragranceSchema, UpdateFragranceSchema } from '../validation/fragrance.validation';
 
-export class FragranceService {
-  constructor(private fragranceRepository: FragranceRepository) { }
+export interface IFragranceService {
+  createFragrance(data: unknown): Promise<Fragrance>;
+  getFragranceById(id: string): Promise<Fragrance>;
+  getAllFragrances(
+    page?: number,
+    limit?: number,
+    activeOnly?: boolean
+  ): Promise<{
+    data: Fragrance[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }>;
+  getActiveFragrances(): Promise<Fragrance[]>;
+  updateFragrance(id: string, data: unknown): Promise<Fragrance>;
+  toggleActive(id: string): Promise<Fragrance>;
+  deleteFragrance(id: string): Promise<void>;
+  deleteMany(ids: string[]): Promise<number>;
+  createMany(dataArray: unknown[]): Promise<Fragrance[]>;
+}
+
+export class FragranceService implements IFragranceService {
+  constructor(private readonly fragranceRepository: IFragranceRepository) { }
 
   async createFragrance(data: unknown): Promise<Fragrance> {
     const validated = CreateFragranceSchema.parse(data);

@@ -1,9 +1,21 @@
 import { Request, Response } from 'express';
 import { OrderStatus } from '../entities/Order.entity';
-import { OrderService } from '../services/order.service';
+import { IOrderService } from '../services/order.service';
 
-export class OrderController {
-  constructor(private orderService: OrderService) { }
+export interface IOrderController {
+  create(req: Request, res: Response): Promise<void>;
+  createMany(req: Request, res: Response): Promise<void>;
+  getAll(req: Request, res: Response): Promise<void>;
+  getById(req: Request, res: Response): Promise<void>;
+  update(req: Request, res: Response): Promise<void>;
+  delete(req: Request, res: Response): Promise<void>;
+  deleteMany(req: Request, res: Response): Promise<void>;
+  calculatePrice(req: Request, res: Response): Promise<void>;
+  getStats(req: Request, res: Response): Promise<void>;
+}
+
+export class OrderController implements IOrderController {
+  constructor(private orderService: IOrderService) { }
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {

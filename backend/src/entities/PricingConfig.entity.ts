@@ -9,7 +9,7 @@ export class PricingConfig {
   minQuantity!: number;
 
   @Column({ type: 'int', nullable: true })
-  maxQuantity!: number;
+  maxQuantity!: number | null;
 
   @Column({ type: 'decimal', precision: 10, scale: 2 })
   unitPrice!: number;

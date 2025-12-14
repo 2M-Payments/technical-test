@@ -2,7 +2,20 @@ import { Repository } from 'typeorm';
 import { PricingConfig } from '../entities/PricingConfig.entity';
 import { AppDataSource } from '../config/datasource';
 
-export class PricingConfigRepository {
+export interface IPricingConfigRepository {
+  create(data: Partial<PricingConfig>): Promise<PricingConfig>;
+  findById(id: string): Promise<PricingConfig | null>;
+  findAll(skip: number, take: number, activeOnly?: boolean): Promise<[PricingConfig[], number]>;
+  findActive(): Promise<PricingConfig[]>;
+  findByQuantity(quantity: number): Promise<PricingConfig | null>;
+  update(id: string, data: Partial<PricingConfig>): Promise<PricingConfig | null>;
+  delete(id: string): Promise<boolean>;
+  deleteMany(ids: string[]): Promise<number>;
+  toggleActive(id: string): Promise<PricingConfig | null>;
+  checkOverlap(minQuantity: number, maxQuantity: number | null, excludeId?: string): Promise<boolean>;
+}
+
+export class PricingConfigRepository implements IPricingConfigRepository {
   private repository: Repository<PricingConfig>;
 
   constructor() {

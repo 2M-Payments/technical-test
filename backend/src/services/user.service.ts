@@ -1,10 +1,25 @@
 import { User } from '../entities/User.entity';
 import bcrypt from 'bcrypt';
 import { CreateUserSchema, UpdateUserSchema } from '../validation/user.validation';
-import { UserRepository } from '../repositories/user.repository';
+import { IUserRepository, UserRepository } from '../repositories/user.repository';
 
-export class UserService {
-  constructor(private userRepository: UserRepository) { }
+export interface IUserService {
+  createUser(data: unknown): Promise<User>;
+  getUserById(id: string): Promise<User>;
+  getAllUsers(page?: number, limit?: number): Promise<{
+    data: User[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }>;
+  updateUser(id: string, data: unknown): Promise<User>;
+  deleteUser(id: string): Promise<void>;
+  deleteMany(ids: string[]): Promise<number>;
+  createMany(dataArray: unknown[]): Promise<User[]>;
+}
+
+export class UserService implements IUserService {
+  constructor(private readonly userRepository: IUserRepository) { }
 
   async createUser(data: unknown): Promise<User> {
     const validated = CreateUserSchema.parse(data);

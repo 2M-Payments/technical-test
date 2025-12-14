@@ -1,6 +1,17 @@
 import { Repository } from 'typeorm';
 import { User } from '../entities/User.entity';
 import { AppDataSource } from '../config/datasource';
+import e from 'express';
+
+export interface IUserRepository {
+  create(data: Partial<User>): Promise<User>;
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
+  findAll(skip: number, take: number): Promise<[User[], number]>;
+  update(id: string, data: Partial<User>): Promise<User | null>;
+  delete(id: string): Promise<boolean>;
+  deleteMany(ids: string[]): Promise<number>;
+}
 
 export class UserRepository {
   private repository: Repository<User>;

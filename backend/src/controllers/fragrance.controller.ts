@@ -1,8 +1,20 @@
 import { Request, Response } from 'express';
-import { FragranceService } from '../services/fragrance.service';
+import { FragranceService, IFragranceService } from '../services/fragrance.service';
 
-export class FragranceController {
-  constructor(private fragranceService: FragranceService) { }
+export interface IFragranceController {
+  create(req: Request, res: Response): Promise<void>;
+  createMany(req: Request, res: Response): Promise<void>;
+  getAll(req: Request, res: Response): Promise<void>;
+  getActive(req: Request, res: Response): Promise<void>;
+  getById(req: Request, res: Response): Promise<void>;
+  update(req: Request, res: Response): Promise<void>;
+  toggleActive(req: Request, res: Response): Promise<void>;
+  delete(req: Request, res: Response): Promise<void>;
+  deleteMany(req: Request, res: Response): Promise<void>;
+}
+
+export class FragranceController implements IFragranceController {
+  constructor(private readonly fragranceService: IFragranceService) { }
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {

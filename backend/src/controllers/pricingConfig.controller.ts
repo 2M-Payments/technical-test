@@ -1,8 +1,21 @@
 import { Request, Response } from 'express';
-import { PricingConfigService } from '../services/pricingConfig.service';
+import { IPricingConfigService } from '../services/pricingConfig.service';
 
-export class PricingConfigController {
-  constructor(private pricingConfigService: PricingConfigService) { }
+export interface IPricingConfigController {
+  create(req: Request, res: Response): Promise<void>;
+  getAll(req: Request, res: Response): Promise<void>;
+  getActive(req: Request, res: Response): Promise<void>;
+  getPricingTable(req: Request, res: Response): Promise<void>;
+  getById(req: Request, res: Response): Promise<void>;
+  update(req: Request, res: Response): Promise<void>;
+  toggleActive(req: Request, res: Response): Promise<void>;
+  delete(req: Request, res: Response): Promise<void>;
+  deleteMany(req: Request, res: Response): Promise<void>;
+  calculatePrice(req: Request, res: Response): Promise<void>;
+}
+
+export class PricingConfigController implements IPricingConfigController {
+  constructor(private pricingConfigService: IPricingConfigService) { }
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {

@@ -1,8 +1,8 @@
 import { Order, OrderStatus } from '../entities/Order.entity';
-import { OrderRepository } from '../repositories/order.repository';
-import { OrderItemRepository } from '../repositories/orderItem.repository';
-import { FragranceRepository } from '../repositories/fragrance.repository';
-import { PricingConfigRepository } from '../repositories/pricingConfig.repository';
+import { IOrderRepository, OrderRepository } from '../repositories/order.repository';
+import { IOrderItemRepository, OrderItemRepository } from '../repositories/orderItem.repository';
+import { FragranceRepository, IFragranceRepository } from '../repositories/fragrance.repository';
+import { IPricingConfigRepository, PricingConfigRepository } from '../repositories/pricingConfig.repository';
 import { CreateOrderSchema, UpdateOrderSchema } from '../validation/order.validation';
 
 interface FragranceSelection {
@@ -18,12 +18,38 @@ interface PriceCalculation {
   total: number;
 }
 
-export class OrderService {
+export interface IOrderService {
+  createOrder(userId: string, data: unknown): Promise<Order>;
+  getOrderById(id: string, userId?: string): Promise<Order>;
+  getAllOrders(
+    page?: number,
+    limit?: number,
+    userId?: string,
+    status?: OrderStatus
+  ): Promise<{
+    data: Order[];
+    total: number;
+    page: number;
+    totalPages: number;
+  }>;
+  updateOrder(id: string, data: unknown, userId?: string): Promise<Order>;
+  deleteOrder(id: string, userId?: string): Promise<void>;
+  deleteMany(ids: string[], userId?: string): Promise<number>;
+  createMany(userId: string, dataArray: unknown[]): Promise<Order[]>;
+  calculatePrice(data: unknown): Promise<PriceCalculation>;
+  getOrderStats(userId?: string): Promise<{
+    totalOrders: number;
+    totalRevenue: number;
+    ordersByStatus: Record<OrderStatus, number>;
+  }>;
+}
+
+export class OrderService implements IOrderService {
   constructor(
-    private orderRepository: OrderRepository,
-    private orderItemRepository: OrderItemRepository,
-    private fragranceRepository: FragranceRepository,
-    private pricingConfigRepository: PricingConfigRepository
+    private orderRepository: IOrderRepository,
+    private orderItemRepository: IOrderItemRepository,
+    private fragranceRepository: IFragranceRepository,
+    private pricingConfigRepository: IPricingConfigRepository
   ) { }
 
   async createOrder(userId: string, data: unknown): Promise<Order> {
