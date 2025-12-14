@@ -4,7 +4,6 @@ export interface User {
   id: string;
   name: string;
   email: string;
-  role: string;
 }
 
 export interface LoginCredentials {
@@ -13,8 +12,15 @@ export interface LoginCredentials {
 }
 
 export interface AuthResponse {
+  message: string;
   token: string;
-  user: User;
+  expiresIn: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+  };
+
 }
 
 export const authService = {

@@ -22,7 +22,6 @@ export const authMiddleware = (
   next: NextFunction
 ): void => {
   try {
-    // Buscar token do header Authorization
     const authHeader = req.headers.authorization;
 
     if (!authHeader) {
@@ -32,7 +31,6 @@ export const authMiddleware = (
       return;
     }
 
-    // Formato esperado: "Bearer <token>"
     const parts = authHeader.split(' ');
 
     if (parts.length !== 2 || parts[0] !== 'Bearer') {
@@ -44,10 +42,8 @@ export const authMiddleware = (
 
     const token = parts[1];
 
-    // Verificar e decodificar token
     const decoded = JwtUtil.verifyToken(token);
 
-    // Adicionar dados do usuário ao request
     req.user = {
       userId: decoded.userId,
       email: decoded.email
@@ -61,8 +57,6 @@ export const authMiddleware = (
   }
 };
 
-// Middleware opcional para verificar se o usuário é admin
-// (você precisaria adicionar um campo 'role' na entidade User)
 export const adminMiddleware = (
   req: Request,
   res: Response,
@@ -75,9 +69,6 @@ export const adminMiddleware = (
     return;
   }
 
-  // Aqui você poderia verificar se o usuário é admin
-  // const user = await userService.getUserById(req.user.userId);
-  // if (user.role !== 'admin') { ... }
 
   next();
 };

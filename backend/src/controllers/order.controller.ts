@@ -7,7 +7,7 @@ export class OrderController {
 
   create = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.user.userId!;
+      const userId = req.user?.userId!;
       const order = await this.orderService.createOrder(userId, req.body);
       res.status(201).json(order);
     } catch (error) {
@@ -19,7 +19,7 @@ export class OrderController {
 
   createMany = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.user.userId!;
+      const userId = req.user?.userId!;
 
       if (!Array.isArray(req.body)) {
         res.status(400).json({ error: 'Body deve ser um array' });
@@ -43,7 +43,7 @@ export class OrderController {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 10;
       const status = req.query.status as OrderStatus | undefined;
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
 
       const result = await this.orderService.getAllOrders(page, limit, userId, status);
       res.json(result);
@@ -56,7 +56,7 @@ export class OrderController {
 
   getById = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const order = await this.orderService.getOrderById(req.params.id, userId);
       res.json(order);
     } catch (error) {
@@ -68,7 +68,7 @@ export class OrderController {
 
   update = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       const order = await this.orderService.updateOrder(req.params.id, req.body, userId);
       res.json(order);
     } catch (error) {
@@ -80,7 +80,7 @@ export class OrderController {
 
   delete = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
       await this.orderService.deleteOrder(req.params.id, userId);
       res.status(204).send();
     } catch (error) {
@@ -93,7 +93,7 @@ export class OrderController {
   deleteMany = async (req: Request, res: Response): Promise<void> => {
     try {
       const { ids } = req.body;
-      const userId = req.user.userId;
+      const userId = req.user?.userId;
 
       if (!Array.isArray(ids) || ids.length === 0) {
         res.status(400).json({ error: 'IDs inválidos' });
@@ -126,8 +126,8 @@ export class OrderController {
 
   getStats = async (req: Request, res: Response): Promise<void> => {
     try {
-      const userId = req.user.userId;
-      const stats = await this.orderService.getStats(userId);
+      const userId = req?.user?.userId;
+      const stats = await this.orderService.getOrderStats(userId);
       res.json(stats);
     } catch (error) {
       res.status(500).json({

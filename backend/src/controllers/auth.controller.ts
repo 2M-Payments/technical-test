@@ -21,7 +21,7 @@ export class AuthController {
 
   verifyToken = async (req: Request, res: Response): Promise<void> => {
     try {
-      const authHeader = req.headers.authorization;
+      const authHeader = req.body.token;
 
       if (!authHeader) {
         res.status(401).json({ error: 'Token não fornecido' });
