@@ -9,6 +9,13 @@ export interface Fragrance {
   updatedAt: string;
 }
 
+export interface FragranceListResponse {
+  data: Fragrance[];
+  total: number;
+  page: number;
+  limit: number;
+}
+
 export interface CreateFragranceData {
   name: string;
   description?: string;
@@ -16,8 +23,8 @@ export interface CreateFragranceData {
 }
 
 export const fragranceService = {
-  getAll: async (): Promise<Fragrance[]> => {
-    return api.get<Fragrance[]>('/fragrances');
+  getAll: async (): Promise<FragranceListResponse> => {
+    return api.get<FragranceListResponse>('/fragrances');
   },
 
   getActive: async (): Promise<Fragrance[]> => {
