@@ -1,31 +1,49 @@
-FROM node:25-alpine AS build
+# Backend build stage
+FROM node:20-alpine AS backend_build
 WORKDIR /app
 
-COPY backend/package*.json ./
-RUN npm install
+# Enable corepack to use pnpm
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY backend/package.json backend/pnpm-lock.yaml ./
+
+# Install ALL dependencies (including devDependencies for build)
+RUN pnpm install --frozen-lockfile
+
 COPY backend/. .
-RUN npm run build
+RUN pnpm run build
 
-FROM node:25-alpine AS prod
+# Backend production stage
+FROM node:20-alpine AS backend_prod
 WORKDIR /app
 
-COPY --from=build /app/dist ./dist
-COPY --from=build /app/package*.json ./
-RUN npm install --omit=dev
-EXPOSE 3001
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+COPY --from=backend_build /app/dist ./dist
+COPY --from=backend_build /app/package.json ./app/pnpm-lock.yaml ./
+
+# Install ONLY production dependencies
+RUN pnpm install --prod --frozen-lockfile
+
+USER node
+EXPOSE 8080
 CMD ["node", "dist/server.js"]
 
+# Frontend build stage
+FROM node:20-alpine AS frontend_build
+WORKDIR /app
 
-FROM node:20 AS frontend_builder
-WORKDIR /frontend
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-COPY frontend/package*.json ./
-RUN npm install
-COPY frontend/. .
-RUN npm run build
+COPY frontend/package.json frontend/pnpm-lock.yaml* ./
+RUN pnpm install --frozen-lockfile
 
-FROM node:23-slim AS frontend
-RUN npm install -g serve
-COPY --from=frontend_builder /frontend/dist /app/dist
-EXPOSE 5173
-CMD ["serve", "-s", "/app/dist", "-l", "5173"]
+COPY frontend/ .
+RUN pnpm run build
+
+# Frontend production stage with nginx:WORKDIR name
+FROM nginx:latest AS frontend_prod
+COPY --from=frontend_build /app/dist /usr/share/nginx/html
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

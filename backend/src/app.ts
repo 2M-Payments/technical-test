@@ -5,6 +5,7 @@ import orderRoutes from './routes/order.routes'
 import userRoutes from './routes/user.routes'
 import fragranceRoutes from './routes/fragrance.routes'
 import pricingConfigRoutes from './routes/pricingConfig.routes'
+import 'dotenv/config';
 
 const app = express();
 

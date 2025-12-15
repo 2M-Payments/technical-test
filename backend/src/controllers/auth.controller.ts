@@ -1,15 +1,38 @@
 import { Request, Response } from 'express';
-import { AuthService, IAuthService } from '../services/auth.service';
+import { IAuthService } from '../services/auth.service';
+import { IUserService } from '../services/user.service';
 
 export interface IAuthController {
   login(req: Request, res: Response): Promise<void>;
   verifyToken(req: Request, res: Response): Promise<void>;
   me(req: Request, res: Response): Promise<void>;
+  register(req: Request, res: Response): Promise<void>;
 }
 
 export class AuthController implements IAuthController {
-  constructor(private readonly authService: IAuthService) { }
+  constructor(
+    private readonly authService: IAuthService,
+    private readonly userService: IUserService
+  ) { }
 
+  register = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const user = await this.userService.createUser(req.body);
+
+      res.status(201).json({
+        message: 'Usuário criado com sucesso',
+        user: {
+          id: user.id,
+          email: user.email,
+          name: user.name
+        }
+      });
+    } catch (error) {
+      res.status(400).json({
+        error: error instanceof Error ? error.message : 'Falha ao registrar'
+      });
+    }
+  };
   login = async (req: Request, res: Response): Promise<void> => {
     try {
       const result = await this.authService.login(req.body);
