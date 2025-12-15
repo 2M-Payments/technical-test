@@ -37,41 +37,41 @@ O sistema foi modelado para refletir um cenário real de backoffice:
 
 ## 🚀 Como Executar o Projeto
 
-### 1️⃣ Instalar dependências
+### 1️⃣ Configurar variáveis de ambiente
+
+se atente a deixar os .env certos usando o .env.example como base
+existe 3, um na raiz por conta do docker compose, mais um em cada pasta (frontend, backend)
+
+
+### 2️⃣ Rodar o docker
 
 ```bash
-pnpm install
-```
-
-### 2️⃣ Configurar variáveis de ambiente
-
-Crie um arquivo `.env` baseado no exemplo:
-
-```env
-DB_HOST=localhost
-DB_PORT=3306
-BLUEPRINT_DB_USERNAME=root
-BLUEPRINT_DB_PASSWORD=password
-BLUEPRINT_DB_DATABASE=blueprint
-NODE_ENV=development
+docker compose up --build
 ```
 
 ### 3️⃣ Rodar migrations
 
-```bash
-pnpm migration:run
-```
-
-### 4️⃣ Iniciar servidor
+vai estar com o banco zerado, mas configurei as migrations sem seeds
 
 ```bash
-pnpm dev
+cd backend
 ```
+
+```bash
+pnpm run typeorm migration:run
+```
+
 
 A API estará disponível em:
 
 ```
 http://localhost:3001
+```
+
+A Web page estará disponível em:
+
+```
+http://localhost:5173
 ```
 
 ---
