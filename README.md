@@ -72,6 +72,7 @@ Serão analisados os seguintes pontos:
 - **Estrutura dos commits e mensagens**
 - **Uso adequado de injeção de dependência**
 - **Testes unitários**
+- **Criação/Atualização das datas com formato UTC e utilização de timezone**
 - **Avaliação de prioridade na entrega do CRUD**
 
 ## Funcionalidade necessárias do CRUD
