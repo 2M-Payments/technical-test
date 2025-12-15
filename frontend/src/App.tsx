@@ -14,6 +14,7 @@ import { Dashboard } from "./pages/admin/Dashboard";
 import { Fragrances } from "./pages/admin/Fragrances";
 import { Orders } from "./pages/admin/Orders";
 import { Pricing } from "./pages/admin/Pricing";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,8 @@ const App = () => (
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+
             
             {/* Admin Routes */}
             <Route

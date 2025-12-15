@@ -26,7 +26,7 @@ COPY --from=backend_build /app/package.json ./app/pnpm-lock.yaml ./
 RUN pnpm install --prod --frozen-lockfile
 
 USER node
-EXPOSE 8080
+EXPOSE 3001
 CMD ["node", "dist/server.js"]
 
 # Frontend build stage

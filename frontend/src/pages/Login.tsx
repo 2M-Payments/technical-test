@@ -104,8 +104,14 @@ const Login = () => {
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <div className="mt-6 text-center space-y-2">
+            <p className="text-sm text-muted-foreground">
+              Não tem uma conta?{' '}
+              <Link to="/register" className="text-primary hover:underline font-medium">
+                Criar conta
+              </Link>
+            </p>
+            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground transition-colors block">
               ← Voltar para a loja
             </Link>
           </div>

@@ -1,9 +1,19 @@
 import api from './api';
+import { CreateUserData } from './user.service';
 
 export interface User {
   id: string;
   name: string;
   email: string;
+}
+
+export interface RegisterRequest {
+  name: string;
+  email: string;
+  password: string;
+  company?: string;
+  phone?: string;
+  role: 'user' | 'admin';
 }
 
 export interface LoginCredentials {
@@ -34,6 +44,9 @@ export const authService = {
 
   verifyToken: async (token: string): Promise<{ valid: boolean; user?: User }> => {
     return api.post<{ valid: boolean; user?: User }>('/auth/verify-token', { token });
+  },
+  register: async (data: RegisterRequest): Promise<User> => {
+    return api.post<User>('/auth/register', data);
   },
 };
 
