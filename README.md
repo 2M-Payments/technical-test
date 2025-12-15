@@ -72,18 +72,19 @@ Serão analisados os seguintes pontos:
 - **Estrutura dos commits e mensagens**
 - **Uso adequado de injeção de dependência**
 - **Testes unitários**
-- **Criação/Atualização das datas com formato UTC e utilização de timezone**
 - **Avaliação de prioridade na entrega do CRUD**
 
 ## Funcionalidade necessárias do CRUD
 1. Criar um item por vez
 2. Criar vários itens em lote
-3. Listagem de todos os itens do CRUD utilizando paginação
-4. Listagem de um único item buscado por ID
-5. Alteração dos dados de um item específico
-6. Deletar um item por vez
-7. Deletar vários itens por vez
-8. Deletar todos os itens de uma vez
+3. Filtro por data
+4. Listagem de todos os itens do CRUD utilizando paginação
+5. Listagem de um único item buscado por ID
+6. Alteração dos dados de um item específico
+7. Deletar um item por vez
+8. Deletar vários itens por vez
+9. Deletar todos os itens de uma vez
+10. Usuário pode estar em mais de uma região/localidade. Exemplo: Brasil e Inglaterra
 
 ## Observações
 1. O candidato deverá criar um fork do repositório. Ao concluir a avaliação, abrir um pull request.
