@@ -78,13 +78,14 @@ Serão analisados os seguintes pontos:
 1. Criar um item por vez
 2. Criar vários itens em lote
 3. Filtro por data
-4. Listagem de todos os itens do CRUD utilizando paginação
-5. Listagem de um único item buscado por ID
-6. Alteração dos dados de um item específico
-7. Deletar um item por vez
-8. Deletar vários itens por vez
-9. Deletar todos os itens de uma vez
-10. Usuário pode estar em mais de uma região/localidade. Exemplo: Brasil e Inglaterra
+4. Aplicação de Filtros por status ou outro dado que seja possível a filtragem
+5. Listagem de todos os itens do CRUD utilizando paginação
+6. Listagem de um único item buscado por ID
+7. Alteração dos dados de um item específico
+8. Deletar um item por vez
+9. Deletar vários itens por vez
+10. Deletar todos os itens de uma vez
+11. Usuário pode estar em mais de uma região/localidade. Exemplo: Brasil e Inglaterra
 
 ## Observações
 1. O candidato deverá criar um fork do repositório. Ao concluir a avaliação, abrir um pull request.
